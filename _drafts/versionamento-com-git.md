@@ -17,6 +17,7 @@ twitter_text: 'Aprendendo versionamento com Git' # MESMO TEXTO DA description
   * [Dando os primeiros passos com GIT](#dando-os-primeiros-passos-com-git)
   * [Começando trabalhar com repositório remoto](#comeando-trabalhar-com-repositrio-remoto)
   * [Trabalhando com branchs](#trabalhando-com-branchs)
+  * [Retornando conteúdo da branch de desenvolvimento para a master](#retornando-contedo-da-branch-de-desenvolvimento-para-a-master)
   * [Conclusão](#concluso)
 
 ## Introdução
@@ -228,6 +229,41 @@ $ cd treinamentoGIT
 /tmp/treinamentoGIT $ git branch
     desenvolvimento
   * master
+{% endhighlight %}
+
+## Retornando conteúdo da branch de desenvolvimento para a master
+
+Nós finalizamos, e agora como retornar o conteúdo da branch desenvolvimento para nossa branch master? Para realizarmos isso teremos que primeiro ir para nossa branch master e atualizar ela. Isso é necessário quando estamos desenvolvendo com outras pessoas num mesmo repositório, então nossa master local pode estar desatualizada em relação a master remota, além disso temos que trazer os novos commits  realizados nela para nossa branch desenvolvimento também de forma que ela fique sincronizada com a master antes de realizarmos a operação de merge.
+
+Primeiro vamos mudar para nossa branch master com o `git checkout master`, depois atualizamos ela com o `git pull`. Feito isso, temos que atualizar nossa branch de desenvolvimento como o novo conteúdo da master, para realizar isso temos duas opções, podemos fazer uso do `git merge`, porém com ele poderemos sujar nosso histórico de modificações com uma operação a mais de merge caso haja algum conflito de arquivos, então a forma mais indicada é utilizar o `git rebase`, com ele conseguiremos fazer a atualização da nossa branch de desenvolvimento sem a necessidade de um commit de merge. Depois temos que voltar para nossa branch master para realizar o merge da branch de desenvolvimento, dessa vez não haverá conflitos porque nossa branch de desenvolvimento já está com todos os commits da master, por causa do rebase. Feito o merge, só nos falta realizar o `git push` para enviar as atualização da master local para a remota.
+
+{% highlight shell %}
+$ git checkout master
+  Switched to branch 'master'
+  Seu ramo está à frente de 'origin/master' por 1 submissão.
+    (use "git push" to publish your local commits)
+$ git pull
+  Username for 'http://github.com': seu_usuario
+  Password for 'http://seu_usuario@github.com':
+  Already up-to-date.
+$ git checkout desenvolvimento
+  Switched to branch 'desenvolvimento'
+  Your branch is up-to-date with 'origin/desenvolvimento'.
+$ git rebase master desenvolvimento
+  First, rewinding head to replay your work on top of it...
+  Fast-forwarded desenvolvimento to master.
+$ git checkout master
+  Switched to branch 'master'
+  Seu ramo está à frente de 'origin/master' por 1 submissão.
+    (use "git push" to publish your local commits)
+$ git merge desenvolvimento
+  Already up-to-date.
+$ git push
+  Username for 'http://github.com': seu_usuario
+  Password for 'http://seu_usuario@github.com':
+  Total 0 (delta 0), reused 0 (delta 0)
+  To http://github.com/desenvolvimento/treinamentoGIT.git
+     2d1a2cf..7dd7472  master -> master
 {% endhighlight %}
 
 ## Conclusão
