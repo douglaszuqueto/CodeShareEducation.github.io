@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Versionamento com Git"
-date: 2016-12-30 12:00:00 # COLOQUE DATA E HORA NESSE MESMO FORMATO
+date: 2016-12-29 12:00:00 # COLOQUE DATA E HORA NESSE MESMO FORMATO
 author: mcqueide # CASO NÃO TENHA PERFIL DE AUTOR CADASTRADO DEIXE O VALOR PADRÃO OU COM O NOME DO SEU PERFIL DE AUTOR
 image: '/assets/img/' # DEIXE ASSIM COMO PADRÃO
 description: 'Aprendendo versionamento com Git' # PEQUENA DESCRIÇÃO SOBRE O POST - DEVE SER O MESMO DO twitter_text POR ISSO DEVE SER CURTO
@@ -73,6 +73,8 @@ $ git commit -am "Adicionado título na página"
 Se executarmos o `git log` veremos todos os commits realizados. Porém tudo as tarefas realizadas ainda estão apenas em nosso computador, como outros usuários irão colaborar com o nosso projeto? O git trabalha de duas forma, com o repositório local, e com o remoto. O local como dá-se a entender, está disponível apenas em sua máquina, o remoto fica disponível para a rede, onde qualquer usuário que tenha permissão de acesso podem obter ou enviar cópias de seus arquivos, deixando disponível para todos.
 
 Existem alguns repositórios livres na internet para que você possa submeter seus arquivos, um bastante famoso é o [Git Hub](http://github.com), ele é um repositório livre e grátis, na forma grátis você tem um limite de espaço e seu repositório fica aberto para todos da comunidade verem, e se tiver interesse, tem opção de adicionar colaboradores para o seu projeto, dando assim permissão que outros contribuam com seu projeto. A versão paga, garante uma privacidade dos seus fontes e um espaço maior de repositório.
+
+![Criando novo repositório no Git Hub](../assets/img/post-git/create-new-repository-github.png)
 
 Nesse material faremos uso do Git Hub, mas sinta-se livre para utilizar qualquer outro repositório remoto da sua preferência. Primeiro passo, crie uma conta se você ainda não tiver e depois um repositório treinamentoGIT, agora vamos enviar nossas modificações para nosso repositório remoto, para isso vamos adicionar esse repositório remoto no nosso repositório local. Para isso vamos executar primeiramente o comando `git remote`, que mostra os repositórios remotos em nossa máquina. Como ainda não temos nenhum, nada irá aparecer. Então vamos adicionar o primeiro:
 
