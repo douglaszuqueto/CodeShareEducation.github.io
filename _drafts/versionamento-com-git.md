@@ -17,7 +17,7 @@ twitter_text: 'Aprendendo versionamento com Git' # MESMO TEXTO DA description
   * [Dando os primeiros passos com GIT](#dando-os-primeiros-passos-com-git)
   * [Começando trabalhar com repositório remoto](#comeando-trabalhar-com-repositrio-remoto)
   * [Trabalhando com branchs](#trabalhando-com-branchs)
-
+  * [Conclusão](#concluso)
 
 ## Introdução
 
@@ -41,7 +41,7 @@ Depois de ter realizado nosso primeiro commit, vamos realizar uma alteração no
 </html>
 {% endhighlight %}
 
-Com isso vamos realizar mais um commit, dessa vez vamos utilizar o parâmetro -m passando a mensagem já na operação de commit, mas antes vamos verificar o estado do nosso repositório com o git status:
+Com isso vamos realizar mais um commit, dessa vez vamos utilizar o parâmetro -am já adicionando todos os arquivo e passando a mensagem já na operação de commit, mas antes vamos verificar o estado do nosso repositório com o `git status`:
 
 {% highlight shell %}
 $ git status
@@ -56,7 +56,7 @@ Changes not staged for commit:
 nenhuma modificação adicionada à submissão (utilize "git add" e/ou "git commit -a")
 {% endhighlight %}
 
-Dessa vez percebemos que o estado do nosso arquivo está modified já que ele foi modificado. Vamos realizar o commit:
+Dessa vez percebemos que o estado do nosso arquivo está `modified` já que ele foi modificado. Vamos realizar o commit:
 
 {% highlight shell %}
 $ git commit -am "Adicionado título na página"
@@ -65,19 +65,23 @@ $ git commit -am "Adicionado título na página"
  1 file changed, 2 insertions(+)
 {% endhighlight %}
 
+> Perceba que o `git commit -am "mensagem"` é o mesmo que estivéssemos executando `git add --all` e depois o `git commit -m "mensagem"` em seguida.
+
 ## Começando trabalhar com repositório remoto
 
-Se executarmos o git log veremos todos os commits realizados. Porém tudo as tarefas realizadas ainda estão apenas em nosso computador, como outros usuários irão colaborar como o nosso projeto? O git trabalha de duas forma, com o repositório local, e com o remoto, o local como dá-se a entender ele está disponível apenas em sua máquina, o remoto fica disponível para a rede, onde qualquer usuário que tenha permissão de acesso podem obter ou enviar cópias de seus arquivos, deixando disponível para todos.
+Se executarmos o `git log` veremos todos os commits realizados. Porém tudo as tarefas realizadas ainda estão apenas em nosso computador, como outros usuários irão colaborar com o nosso projeto? O git trabalha de duas forma, com o repositório local, e com o remoto. O local como dá-se a entender, está disponível apenas em sua máquina, o remoto fica disponível para a rede, onde qualquer usuário que tenha permissão de acesso podem obter ou enviar cópias de seus arquivos, deixando disponível para todos.
 
-Existem alguns repositórios livres na internet para que você possa submeter seus arquivos, um bastante famoso é o [Git Hub](http://github.com), ele é um repositório livre e grátis, na forma grátis você tem um limite de espaço e seu repositório fica aberto para todos da comunidade apenas verem, e se tiver interesse, tem opção de adicionar colaboradores para o seu projeto. A versão paga, garante uma privacidade dos seus fontes e um espaço maior de repositório.
+Existem alguns repositórios livres na internet para que você possa submeter seus arquivos, um bastante famoso é o [Git Hub](http://github.com), ele é um repositório livre e grátis, na forma grátis você tem um limite de espaço e seu repositório fica aberto para todos da comunidade verem, e se tiver interesse, tem opção de adicionar colaboradores para o seu projeto, dando assim permissão que outros contribuam com seu projeto. A versão paga, garante uma privacidade dos seus fontes e um espaço maior de repositório.
 
-Nesse material faremos uso do Git Hub, mas sinta-se livre para utilizar qualquer outro repositório remoto da sua preferência. Primeiro passo, crie uma conta se você ainda não tiver e depois um repositório treinamentoGIT, agora vamos pegar esse nosso repositório local e enviar ele para nosso repositório remoto, para isso vamos adicionar esse repositório remoto no nosso repositório local. Para isso vamos executar primeiramente o comando git remote, que mostra os repositórios remotos em nossa máquina. Como ainda não temos nenhum, nada irá aparecer. Então vamos adicionar o primeiro:
+Nesse material faremos uso do Git Hub, mas sinta-se livre para utilizar qualquer outro repositório remoto da sua preferência. Primeiro passo, crie uma conta se você ainda não tiver e depois um repositório treinamentoGIT, agora vamos enviar nossas modificações para nosso repositório remoto, para isso vamos adicionar esse repositório remoto no nosso repositório local. Para isso vamos executar primeiramente o comando `git remote`, que mostra os repositórios remotos em nossa máquina. Como ainda não temos nenhum, nada irá aparecer. Então vamos adicionar o primeiro:
 
 {% highlight shell %}
 $ git remote add origin http://github.com/seu_usuario_no_github/treinamentoGIT.git
 {% endhighlight %}
 
-O origin no comando é o nome que estamos dando para esse repositório remoto, a url em seguida é o endereço do nosso repositório remoto. Feito isso se executarmos o comando git remote novamente veremos que aparece um repositório origin na nossa linha de comando:
+> O `origin` no comando é o nome que estamos dando para esse repositório remoto, a `url` em seguida é o endereço do nosso repositório remoto.
+
+Feito isso se executarmos o comando `git remote` novamente veremos que aparece um repositório `origin` na nossa linha de comando:
 
 {% highlight shell %}
 $ git remote
@@ -85,7 +89,9 @@ $ git remote
 origin
 {% endhighlight %}
 
-Agora que adicionamos um repositório remoto, podemos enviar nosso código para esse repositório com o comando git push. Como será nosso primeiro envio devemos informar para qual repositório remoto e qual branch estamos enviando os arquivos. Para isso usamos o comando git push. Depois de executar o comando o git perguntará qual seu usuário e senha desse repositório remoto.
+Agora que adicionamos um repositório remoto, podemos enviar nosso código para esse repositório com o comando git push. Como será nosso primeiro envio devemos informar para qual repositório remoto e qual branch estamos enviando os arquivos. Para isso usamos o comando `git push origin master`. Depois de executar o comando o git perguntará qual seu usuário e senha desse repositório remoto.
+
+> Para ficar bem claro o `origin` é o nome do repositório remoto que adicionamos, o `master` é o nome da branch.
 
 {% highlight shell %}
 $ git push origin master
@@ -101,7 +107,7 @@ To http://github.com/treinamentoGIT.git
  * [new branch]      master -> master
 {% endhighlight %}
 
-Nós fizemos o caminho onde criamos nosso repositório local e enviamos ele para um repositório remoto, mas e se formos colaborar com um projeto já existente, que já possua um repositório remoto? Então o primeiro passo será obter ele, para fazermos isso, basta ir para um diretório que achar mais conveniente e executar o comando git clone. Com isso o git irá criar um repositório local na sua máquina com todos os arquivos e histórico de modificações (log) desse repositório.
+Nós fizemos o cenário de quando criamos nosso repositório local e enviamos ele para um repositório remoto, mas e se formos colaborar com um projeto já existente, que já possua um repositório remoto? Então o primeiro passo será obter ele. Para fazermos isso, basta ir para um diretório que achar mais conveniente e executar o comando `git clone`. Com isso o git irá criar um repositório local na sua máquina com todos os arquivos e histórico de modificações (log) desse repositório.
 
 {% highlight shell %}
 $ git clone http://github.com/treinamentoGIT.git
@@ -117,13 +123,13 @@ $ git clone http://github.com/treinamentoGIT.git
 
 ## Trabalhando com branchs
 
-Quando trabalhando com versionamento de controle, normalmente isolamos nossa linha de desenvolvimento da linha de produção que é uma linha onde as funcionalidades já estão implementadas completamente. Por isso é comum criarmos uma branch para que sirva para o desenvolvimento de funcionalidades enquanto as mesmas não estiverem finalizadas. Para isso vamos criar uma nova branch desenvolvimento, primeiro vamos visualizar as branchs locais em nossa máquina com o comando git branch, o git irá responder que temos apenas a branch master. Para criamos uma nova branch execute:
+Quando trabalhando com versionamento de controle, normalmente isolamos nossa linha de desenvolvimento da linha de produção, branch master, que é uma linha onde as funcionalidades já estão implementadas completamente. Por isso é comum criarmos uma branch para que sirva para o desenvolvimento de funcionalidades enquanto as mesmas não estão finalizadas. Para isso vamos criar uma nova branch desenvolvimento, primeiro vamos visualizar as branchs locais em nossa máquina com o comando `git branch`, o git irá responder que temos apenas a branch master. Para criamos uma nova branch execute:
 
 {% highlight shell %}
 $ git branch desenvolvimento
 {% endhighlight %}
 
-Ao executar novamente git branch, agora é retornado as branchs master, e desenvolvimento, e o git ainda informa qual branch está em uso no momento destacando ela com um asterisco.
+Ao executar novamente `git branch`, agora é retornado as branchs master e desenvolvimento, e o git ainda informa qual branch está em uso no momento destacando ela com um asterisco.
 
 {% highlight shell %}
 $ git branch
@@ -132,15 +138,11 @@ desenvolvimento
 * master
 {% endhighlight %}
 
-Para mudarmos para nossa branch de desenvolvimento devemos executar o comando git checkout desenvolvimento. Depois disso já estaremos na nossa outra branch.
+Para mudarmos para nossa branch de desenvolvimento devemos executar o comando `git checkout desenvolvimento`. Depois disso já estaremos na nossa outra branch.
 
-Temos outra forma de criar branchs e já realizarmos o checkout automaticamente, isso é possível adicionando o parâmetro -b durante a criação da nova branch:
+> Normalmente quando criamos uma branch queremos mudar para ela logo em seguida. podemos fazer isso com o comando `git checkout -b desenvolvimento`
 
-{% highlight shell %}
-$ git checkout -b desenvolvimento
-{% endhighlight %}
-
-Agora vamos continuar nosso trabalho. Na nossa linha de desenvolvimento vamos alterar nosso arquivo de index.html, adicionando um novo parágrafo <p>Começando o desenvolvimento na branch de desenvolvimento</p>:
+Agora vamos continuar nosso trabalho. Na nossa linha de desenvolvimento, vamos alterar nosso arquivo de index.html, adicionando um novo parágrafo `<p>Começando o desenvolvimento na branch de desenvolvimento</p>`:
 
 {% highlight html %}
 <!DOCTYPE html>
@@ -166,8 +168,8 @@ $ git commit -m "Criando a branch de desenvolvimento"
   [master 7dd7472] Criando a branch de desenvolvimento
    1 file changed, 4 insertions(+), 2 deletions(-)
 $ git push origin desenvolvimento
-  Username for 'http://gitlab.turismo.gov.br': john.clemente
-  Password for 'http://john.clemente@gitlab.turismo.gov.br':
+  Username for 'http://github.com': user_name
+  Password for 'http://user_name@github.com':
   Total 0 (delta 0), reused 0 (delta 0)
   remote:
   remote: To create a merge request for desenvolvimento, visit:
@@ -177,7 +179,7 @@ $ git push origin desenvolvimento
    * [new branch]      desenvolvimento -> desenvolvimento
 {% endhighlight %}
 
-Feito isso, o git cria nossa nova branch, desenvolvimento, no repositório remoto juntamente com o commit realizado. Vamos realizar um git pull para atualizar nosso repositório e verificar se o git realmente criou nossa branch remota. Ao realizar o comando o git informa que não sabe a qual branch no repositório remoto se refere a nossa branch de desenvolvimento local.
+Feito isso, o git cria nossa nova branch, desenvolvimento, no repositório remoto juntamente com o commit realizado. Vamos realizar um `git pull` para atualizar nosso repositório e verificar se o git realmente criou nossa branch remota. Ao realizar o comando o git informa que não sabe a qual branch no repositório remoto se refere a nossa branch de desenvolvimento local.
 
 {% highlight shell %}
 $ git pull
@@ -204,13 +206,13 @@ $ git push -u origin desenvolvimento
   Everything up-to-date
 {% endhighlight %}
 
-Com isso o git informa que nossa branch desenvolvimento local está track com a branch remota desenvolvimento, e agora podemos realizar o comando git pull, livremente.
+Com isso o git informa que nossa branch desenvolvimento local está track com a branch remota desenvolvimento, e agora podemos realizar o comando git pull livremente.
 
-Agora e se tivermos uma branch no repositório remoto que não temos no nosso local, se executarmos o git branch nome_da_branch ou git branch -b nome_da_branch, estaremos apenas criando essas branch no nosso repositório local e o git em momento nenhum saberá que elas deveriam estar ligadas a alguma branch remota.
+Agora, e se tivermos uma branch no repositório remoto que não temos no nosso local, se executarmos o `git branch nome_da_branch` ou `git branch -b nome_da_branch`, estaremos apenas criando uma branch no nosso repositório local e o git em momento nenhum saberá que ela deveria estar ligada a alguma branch remota.
 
-Para criarmos uma branch local que esteja relacionado com uma branch remota devemos executar o comando git branch -t nome_da_branch origin/nome_da_branch_remota.
+Para criarmos uma branch local que esteja relacionado com uma branch remota devemos executar o comando `git branch -t nome_da_branch origin/nome_da_branch_remota`.
 
-Para fazermos o teste vamos para um outro diretório qualquer, por exemplo /tmp, e faça o clone do seu projeto, depois execute o comando git branch para visualizar quais branchs locais estão nesse repositório, feito isso execute o comando git branch -r para verificar as branchs remotas. Então após feito isso, vamos criar nossa branch local apontando para nosso repositório remoto origin e para a branch desenvolvimento.
+Para fazermos o teste vamos para um outro diretório qualquer, por exemplo /tmp, e faça o clone do seu projeto, depois execute o comando `git branch` para visualizar quais branchs locais estão nesse repositório, feito isso execute o comando `git branch -r` para verificar as branchs remotas. Então após feito isso, vamos criar nossa branch local apontando para nosso repositório remoto `origin` e para a branch `desenvolvimento`.
 
 {% highlight shell %}
 /tmp $ git clone http://github.com/treinamentoGIT.git
@@ -227,3 +229,7 @@ $ cd treinamentoGIT
     desenvolvimento
   * master
 {% endhighlight %}
+
+## Conclusão
+
+Esse material apresentou algumas operações básicas do Git, mostrando como manter um repositório local e remoto. Para não estendê-lo tanto, teremos a continuação dele em um próximo post, onde abordaremos alguns outros cenários, como escrita concorrente em um mesmo arquivo e até mesmo no mesmo trecho do arquivo, realizando assim as famosas e temidas operações de merge.
