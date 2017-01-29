@@ -74,9 +74,15 @@ Se executarmos o `git log` veremos todos os commits realizados. Porém tudo as t
 
 Existem alguns repositórios livres na internet para que você possa submeter seus arquivos, um bastante famoso é o [Git Hub](http://github.com), ele é um repositório livre e grátis, na forma grátis você tem um limite de espaço e seu repositório fica aberto para todos da comunidade verem, e se tiver interesse, tem opção de adicionar colaboradores para o seu projeto, dando assim permissão que outros contribuam com seu projeto. A versão paga, garante uma privacidade dos seus fontes e um espaço maior de repositório.
 
-![Criando novo repositório no Git Hub](../assets/img/post-git/create-new-repository-github.png)
+![Criando novo repositório no Git Hub][new-repository]
+Criando um novo repositório
+[new-repository]: ../assets/img/post-git/create-new-repository-github.png "Novo reposiorio git"
 
 Nesse material faremos uso do Git Hub, mas sinta-se livre para utilizar qualquer outro repositório remoto da sua preferência. Primeiro passo, crie uma conta se você ainda não tiver e depois um repositório treinamentoGIT, agora vamos enviar nossas modificações para nosso repositório remoto, para isso vamos adicionar esse repositório remoto no nosso repositório local. Para isso vamos executar primeiramente o comando `git remote`, que mostra os repositórios remotos em nossa máquina. Como ainda não temos nenhum, nada irá aparecer. Então vamos adicionar o primeiro:
+
+![Obtendo URL do repositório GitHub][url-github]
+Obtendo URL do repositório GitHub
+[url-github]: ../assets/img/post-git/create-new-repository-github.png "Novo reposiorio git"
 
 {% highlight shell %}
 $ git remote add origin http://github.com/seu_usuario_no_github/treinamentoGIT.git
@@ -111,6 +117,10 @@ To http://github.com/treinamentoGIT.git
 {% endhighlight %}
 
 Nós fizemos o cenário de quando criamos nosso repositório local e enviamos ele para um repositório remoto, mas e se formos colaborar com um projeto já existente, que já possua um repositório remoto? Então o primeiro passo será obter ele. Para fazermos isso, basta ir para um diretório que achar mais conveniente e executar o comando `git clone`. Com isso o git irá criar um repositório local na sua máquina com todos os arquivos e histórico de modificações (log) desse repositório.
+
+![Como clonar repositório GitHub][url-github-clone]
+Como clonar repositório GitHub
+[url-github-clone]: ../assets/img/post-git/how-to-clone-git-repository.png "Como clonar repositório GitHub"
 
 {% highlight shell %}
 $ git clone http://github.com/treinamentoGIT.git
