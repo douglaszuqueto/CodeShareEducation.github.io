@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Versionamento com Git"
-date: 2016-12-29 12:00:00 # COLOQUE DATA E HORA NESSE MESMO FORMATO
+date: 2017-01-30 12:00:00 # COLOQUE DATA E HORA NESSE MESMO FORMATO
 author: mcqueide # CASO NÃO TENHA PERFIL DE AUTOR CADASTRADO DEIXE O VALOR PADRÃO OU COM O NOME DO SEU PERFIL DE AUTOR
 image: '/assets/img/' # DEIXE ASSIM COMO PADRÃO
 description: 'Aprendendo versionamento com Git' # PEQUENA DESCRIÇÃO SOBRE O POST - DEVE SER O MESMO DO twitter_text POR ISSO DEVE SER CURTO
@@ -22,11 +22,142 @@ twitter_text: 'Aprendendo versionamento com Git' # MESMO TEXTO DA description
 
 ## Introdução
 
-TODO: Falta pegar o texto que está na empresa
+Quando trabalhamos em equipe, podem ocorrer vezes em que temos que trabalhar numa mesma funcionalidade, portanto acontece vezes que realizamos alterações num mesmo arquivo, ou até mesmo em um mesmo trecho de código. Então como resolver essas situações, devemos combinar com os colegas de equipe quem irá alterar o arquivo primeiro, para só assim enviar o arquivo com as novas alterações para quem estiver aguardando na fila?
+
+As ferramentas de controle de versão vêm para resolver esse e outros problemas, onde uma ou mais pessoas irão trabalhar com suas cópias de arquivos local, e enviar elas para um servidor centralizado que é responsável por controlar as modificações e versões desses arquivos. A ferramenta irá verificar se o arquivo está atualizado com a última versão disponível no servidor, porque se não tiver, o usuário terá que atualizá-lo para só assim submeter suas modificações, garantindo que o que está no servidor sempre está atualizado.
+
+Além de controlar a versão dos arquivos, os controles de versão mantêm um log das alterações realizadas nos arquivos, mostrando os arquivos alterados, mensagem descritiva da operação e quem a realizou. Outra vantagem é que também funciona como uma forma de cópia de segurança, onde podemos recuperar um determinado arquivo em um determinado estado no passado.
+
+O mercado de controle de versão já conta com bastantes soluções, algumas bastante usadas são o SVN e o GIT, aqui trataremos do GIT.
 
 ## Dando os primeiros passos com GIT
 
+Você pode obter o GIT diretamente no site oficial, [download Git](https://git-scm.com/download), que possui versões para os principais sistemas operacionais Windows, Linux e Mac. Caso você seja usuário de Linux, o site já mostra o processo de instalação para as principais distribuições, por linha de comando de uma forma bem simples.
 Depois de ter realizado nosso primeiro commit, vamos realizar uma alteração no nosso arquivo local, adicionamos um título nesta página.
+
+Se você estiver na plataforma Windows você pode realizar os comandos do git no terminal Git Bash, que é instalado junto com o instalação do Git, se você for usuário de Linux ou Mac, pode fazer uso do terminal do seu sistema operacional.
+
+Para iniciarmos um repositório git em nossa máquina podemos executar o comando: `git init`. Com isso será apresentado na nossa tela uma mensagem semelhante a essa:
+
+{% highlight shell %}
+$ git init
+  Initialized empty Git repository in /tmp/treinamentoGIT/.git/.
+{% endhighlight %}
+
+Simples assim, a parti de agora esse diretório é um repositório local Git.
+
+Agora vamos adicionar um arquivo à essa pasta, crie um arquivo html ou qualquer outro arquivo nessa pasta.
+
+Aqui criei um index.html:
+
+{% highlight html %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Treinamento GIT</title>
+</head>
+<body>
+	<h1>Treinamento GIT</h1>
+</body>
+</html>
+{% endhighlight %}
+
+Nós criamos o arquivo porém não informamos ainda para o Git gerenciá-lo. Se executarmos o `git status`, nós veremos nosso arquivo, e o git informará que nosso arquivo `index.html` não é um arquivo monitorado.
+
+{% highlight shell %}
+$ git status
+  No ramo master
+
+  Submissão inicial.
+
+  Arquivos não monitorados:
+    (utilize "git add <arquivo>..." para incluir o que será submetido)
+
+  	index.html
+
+  nada adicionado ao envio mas arquivos não registrados estão presentes (use "git add" to registrar)
+{% endhighlight %}
+
+Para mudarmos sua situação podemos executar o comando `git add index.html`. Agora nosso arquivo está pronto para ser submetido.
+
+{% highlight shell %}
+$ git add index.html
+  No ramo master
+
+  Submissão inicial.
+
+  Mudanças a serem submetidas:
+    (utilize "git rm --cached <arquivo>..." para não apresentar)
+
+  	new file:   index.html
+{% endhighlight %}
+
+Com isso agora conseguimos realizar o commit de nossas alteração com o comando `git commit`, em seguida será aberto um arquivo de texto temporário no seu terminal semelhante a esse:
+
+{% highlight shell %}
+GNU nano 2.5.3                            Arquivo:/tmp/treinamentoGIT/.git/COMMIT_EDITMSG                                                                                                                       
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# No ramo master
+#
+# Submissão inicial.
+#
+# Mudanças a serem submetidas:
+#       new file:   index.html
+#
+{% endhighlight %}
+
+Você não precisa se preocupar com essas linhas com **#**, elas não irão aparecer na sua mensagem de commit. Elas são meramente descritiva, informam os arquivos que estão sendo submetidos, assim como o estado da alteração, se é um novo arquivo, alteração ou exclusão. Pode digitar a mensagem que você achar mas apropriada para o que você realizou, por exemplo **Meu primeiro commit**. Agora feche o arquivo. Agora irá aparecer algo semelhante a isso no seu terminal:
+
+{% highlight shell %}
+[master (root-commit) 94cccf2] Meu primeiro commit
+ 1 file changed, 11 insertions(+)
+ create mode 100644 index.html
+{% endhighlight %}
+
+Porém se for a primeira vez que você utiliza o Git na máquina então você receberá uma mensagem assim antes:
+
+{% highlight shell %}
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+{% endhighlight %}
+
+Isso aparece porque o git não sabe quem é o usuário, e ele já adianta uma dica de como resolver isso, a ferramenta pede para você executar os comandos :
+
+{% highlight shell %}
+$ git config --global user.email "you@example.com"
+$ git config --global user.name "Your Name"
+{% endhighlight %}
+
+Se você quer que seu usuário fique configurado para todos os repositórios do seu usuário da máquina então você pode executar o comando oferecido pelo Git, mas se você quiser que essas informações sejam atribuídas ao repositório específico  no qual está trabalhando então execute os comandos sem o **- -global**:
+
+{% highlight shell %}
+$ git config user.email "you@example.com"
+$ git config user.name "Your Name"
+{% endhighlight %}
+
+Para verificar que seu commit foi realmente realizado execute o comando `git log`.
+
+{% highlight shell %}
+$ git log
+commit 94cccf23026b15f78d1c11ce3ae79351a3e30eb6
+Author: seu_usuario <seu_usuario@github.com>
+Date:   Thu Jan 26 13:28:31 2017 -0200
+
+    Meu primeiro commit
+{% endhighlight %}
+
+Isso mostra os detalhes do commit realizado, na primeira linha temos o hash do commit, na segunda o usuário e e-mail do usuário que realizou a alteração, na terceira temos a data em que foi realizada.
+
+Nós temos outra opção ao realizar o commit, nós podemos realizá-lo já adicionando todos os arquivos para serem comitados. Para isso vamos adicionar um novo parágrafo no nosso arquivo.
 
 {% highlight html %}
 <!DOCTYPE html>
@@ -37,6 +168,8 @@ Depois de ter realizado nosso primeiro commit, vamos realizar uma alteração no
 <body>
 
   <h1>Treinamento GIT</h1>
+
+  <p>Está página tem como objetivo servir de teste para as operação do GIT</p>
 
 </body>
 </html>
@@ -60,7 +193,7 @@ nenhuma modificação adicionada à submissão (utilize "git add" e/ou "git comm
 Dessa vez percebemos que o estado do nosso arquivo está `modified` já que ele foi modificado. Vamos realizar o commit:
 
 {% highlight shell %}
-$ git commit -am "Adicionado título na página"
+$ git commit -am "Adicionado parágrafo na página"
 
 [master 2d1a2cf] Adicionado título na página
  1 file changed, 2 insertions(+)
