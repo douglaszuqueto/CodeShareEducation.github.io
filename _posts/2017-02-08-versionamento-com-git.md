@@ -1,22 +1,23 @@
 ---
 layout: post
 title: "Versionamento com Git"
-date: 2017-01-30 12:00:00 # COLOQUE DATA E HORA NESSE MESMO FORMATO
-author: mcqueide # CASO NÃO TENHA PERFIL DE AUTOR CADASTRADO DEIXE O VALOR PADRÃO OU COM O NOME DO SEU PERFIL DE AUTOR
-image: '/assets/img/' # DEIXE ASSIM COMO PADRÃO
-description: 'Aprendendo versionamento com Git' # PEQUENA DESCRIÇÃO SOBRE O POST - DEVE SER O MESMO DO twitter_text POR ISSO DEVE SER CURTO
-tags: # DÊ PREFERÊNCIA PARA TAGS QUE JÁ EXISTAM
-- controle de versão
+date: 2017-02-08 20:19:02
+author: mcqueide
+image:
+description: 'Aprendendo versionamento com Git'
+tags:
 - git
-categories: # DÊ PREFERÊNCIA PARA CATEGORIAS QUE JÁ EXISTAM E USE APENAS UMA - EXCETO CASOS RAROS
-- Controle de Versão
-twitter_text: 'Aprendendo versionamento com Git' # MESMO TEXTO DA description
+- versionamento
+categories:
+- Controle de versão
+twitter_text: 'Aprendendo versionamento com Git'
 ---
+
 ## Sumário
   * [Introdução](#introduo)
   * [Dando os primeiros passos com GIT](#dando-os-primeiros-passos-com-git)
   * [Começando trabalhar com repositório remoto](#comeando-trabalhar-com-repositrio-remoto)
-  * [Trabalhando com branchs](#trabalhando-com-branchs)
+  * [Trabalhando com branches](#trabalhando-com-branches)
   * [Retornando conteúdo da branch de desenvolvimento para a master](#retornando-contedo-da-branch-de-desenvolvimento-para-a-master)
   * [Conclusão](#concluso)
 
@@ -33,7 +34,6 @@ O mercado de controle de versão já conta com bastantes soluções, algumas bas
 ## Dando os primeiros passos com GIT
 
 Você pode obter o GIT diretamente no site oficial, [download Git](https://git-scm.com/download), que possui versões para os principais sistemas operacionais Windows, Linux e Mac. Caso você seja usuário de Linux, o site já mostra o processo de instalação para as principais distribuições, por linha de comando de uma forma bem simples.
-Depois de ter realizado nosso primeiro commit, vamos realizar uma alteração no nosso arquivo local, adicionamos um título nesta página.
 
 Se você estiver na plataforma Windows você pode realizar os comandos do git no terminal Git Bash, que é instalado junto com o instalação do Git, se você for usuário de Linux ou Mac, pode fazer uso do terminal do seu sistema operacional.
 
@@ -46,9 +46,9 @@ $ git init
 
 Simples assim, a parti de agora esse diretório é um repositório local Git.
 
-Agora vamos adicionar um arquivo à essa pasta, crie um arquivo html ou qualquer outro arquivo nessa pasta.
+Agora vamos adicionar um arquivo à essa pasta, crie um arquivo `.html` ou qualquer outro arquivo nessa pasta.
 
-Aqui criei um index.html:
+Aqui criei um `index.html`:
 
 {% highlight html %}
 <!DOCTYPE html>
@@ -259,15 +259,15 @@ $ git clone http://github.com/treinamentoGIT.git
   Checking connectivity... done.
 {% endhighlight %}
 
-## Trabalhando com branchs
+## Trabalhando com branches
 
-Quando trabalhamos com versionamento de controle, normalmente isolamos nossa linha de desenvolvimento da linha de produção, branch master, que é uma linha onde as funcionalidades já estão implementadas completamente. Por isso é comum criarmos uma branch para que sirva para o desenvolvimento de funcionalidades enquanto as mesmas não estão finalizadas. Para isso vamos criar uma nova branch desenvolvimento, primeiro vamos visualizar as branchs locais em nossa máquina com o comando `git branch`, o git irá responder que temos apenas a branch master. Para criamos uma nova branch execute:
+Quando trabalhamos com versionamento de controle, normalmente isolamos nossa linha de desenvolvimento da linha de produção, branch master, que é uma linha onde as funcionalidades já estão implementadas completamente. Por isso é comum criarmos uma branch para que sirva para o desenvolvimento de funcionalidades enquanto as mesmas não estão finalizadas. Para isso vamos criar uma nova branch desenvolvimento, primeiro vamos visualizar as branches locais em nossa máquina com o comando `git branch`, o git irá responder que temos apenas a branch master. Para criamos uma nova branch execute:
 
 {% highlight shell %}
 $ git branch desenvolvimento
 {% endhighlight %}
 
-Ao executar novamente `git branch`, agora é retornado as branchs master e desenvolvimento, e o git ainda informa qual branch está em uso no momento destacando ela com um asterisco.
+Ao executar novamente `git branch`, agora é retornado as branches master e desenvolvimento, e o git ainda informa qual branch está em uso no momento destacando ela com um asterisco.
 
 {% highlight shell %}
 $ git branch
@@ -280,7 +280,7 @@ Para mudarmos para nossa branch de desenvolvimento devemos executar o comando `g
 
 > Normalmente quando criamos uma branch queremos mudar para ela logo em seguida. podemos fazer isso com o comando `git checkout -b desenvolvimento`
 
-Agora vamos continuar nosso trabalho. Na nossa linha de desenvolvimento, vamos alterar nosso arquivo de index.html, adicionando um novo parágrafo `<p>Começando o desenvolvimento na branch de desenvolvimento</p>`:
+Agora vamos continuar nosso trabalho. Na nossa linha de desenvolvimento, vamos alterar nosso arquivo `index.html`, adicionando um novo parágrafo `<p>Começando o desenvolvimento na branch de desenvolvimento</p>`:
 
 {% highlight html %}
 <!DOCTYPE html>
@@ -350,7 +350,7 @@ Agora, e se tivermos uma branch no repositório remoto que não temos no nosso l
 
 Para criarmos uma branch local que esteja relacionado com uma branch remota devemos executar o comando `git branch -t nome_da_branch origin/nome_da_branch_remota`.
 
-Para fazermos o teste vamos para um outro diretório qualquer, por exemplo /tmp, e faça o clone do seu projeto, depois execute o comando `git branch` para visualizar quais branchs locais estão nesse repositório, feito isso execute o comando `git branch -r` para verificar as branchs remotas. Vamos criar nossa branch local apontando para nosso repositório remoto `origin` e para a branch `desenvolvimento`.
+Para fazermos o teste vamos para um outro diretório qualquer, por exemplo `/tmp`, e faça o clone do seu projeto, depois execute o comando `git branch` para visualizar quais branches locais estão nesse repositório, feito isso execute o comando `git branch -r` para verificar as branches remotas. Vamos criar nossa branch local apontando para nosso repositório remoto `origin` e para a branch `desenvolvimento`.
 
 {% highlight shell %}
 /tmp $ git clone http://github.com/treinamentoGIT.git
