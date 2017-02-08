@@ -4,13 +4,13 @@ title: "Versionamento com Git"
 date: 2017-02-08 20:19:02
 author: mcqueide
 image:
-description: 'Aprendendo versionamento com Git'
+description: 'Aprendendo a versionar projetos com Git'
 tags:
 - git
 - versionamento
 categories:
 - Controle de versão
-twitter_text: 'Aprendendo versionamento com Git'
+twitter_text: 'Aprendendo a versionar projetos com Git'
 ---
 
 ## Sumário
