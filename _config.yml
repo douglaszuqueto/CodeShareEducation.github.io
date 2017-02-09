@@ -83,6 +83,17 @@ authors:
     desenvolvedor PHP, gosto de aprimorar e atualizar meus conhecimentos e também gosto de trocar experiência e conhecimento com
     outras pessoas. O sucesso e a diversão que tenho no meu trabalho é imenso e mantém essa paixão ardentemente viva."
 
+  lucas:
+    name: Lucas Gabriel
+    gravatar: 55f875340a3bc4833277c0a614e51a84
+    email: luckagabriel@hotmail.com
+    github: lukao98
+    linkedin: luckagabriel
+    twitter:
+    facebook: luckagabriel
+    site:
+    bio: "Graduando em Análise e Desenvolvimento de Sistemas e pupilo do Wendell para aprender sobre o vasto mundo web."
+
 # Build settings
 markdown: kramdown
 highlighter: rouge
