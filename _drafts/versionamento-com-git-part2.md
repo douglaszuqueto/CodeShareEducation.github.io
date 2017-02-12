@@ -1234,3 +1234,7 @@ macaulay:/tmp/repo/treinamentoGit $ git stash pop
 {% endhighlight %}
 
 Se executarmos o `git stash list`, veremos que não tem nenhum stash.
+
+## Conclusão
+
+Nesse material já vimos algumas operações um pouco mais avançadas. Espero ter ajudado a remover o medo que muitos possuem nas operações de merge, e que tirem um bom proveito do uso das chaves ssh. Mas não vimos tudo o que o git nos permite fazer ainda. Para isso, o git conta com uma boa documentação com exemplos inclusive. A documentação do Git está disponível nesse [link](https://git-scm.com/doc). Espero que tenham gostado e até o próximo post.
