@@ -18,7 +18,7 @@ twitter_text: 'Aprendendo a versionar projetos com Git'
   * [Configurando chave SSH](#configurando-chave-ssh)
   * [Apresentando merge automático do Git](#Apresentando-merge-automtico-do-git)
   * [Tratando merge manual](#tratando-merge-manual)
-  * [Retornando conteúdo da branch de desenvolvimento para a master](#retornando-contedo-da-branch-de-desenvolvimento-para-a-master)
+  * [Merge entre branches](#merge-entre-branches)
   * [Conclusão](#concluso)
 
 ## Introdução
@@ -356,4 +356,146 @@ $ git push origin master
   remote: Resolving deltas: 100% (2/2), completed with 1 local objects.
   To https://github.com/mcqueide/treinamentoGIT.git
      5e78803..2b4547a  master -> master
+{% endhighlight %}
+
+## Merge entre branches
+
+Nós simulamos o cenários onde 2 usuários trabalhavam na mesma branch, mais uma boa prática é separamos uma branch de desenvolvimento da nossa branch principal que é a master, dessa forma colocamos o conteúdo de desenvolvimento na branch master quando a funcionalidade estiver finalizada. Fazendo com o conteúdo da branch master sempre esteja estável.
+
+Então vamos criar duas novas branches, uma para o usuário mcqueide e outra para o usuário macaulay, ambos irão desenvolver em suas branches particulares e depois mandar suas alterações para a branch master quando suas tarefas estiverem finalizadas.
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git checkout -b mcqueide
+macaulay:/tmp/repo/treinamentoGit $ git checkout -b macaulay
+{% endhighlight %}
+
+Vamos partir nessa seção com nosso arquivo index.html no seguinte estado:
+
+{% highlight html %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Treinamento Git</title>
+  </head>
+  <body>
+    <header>
+        <h1>Título da Página</h1>
+    </header>
+
+    <main>
+      Conteúdo da página
+    </main>
+
+    <footer>
+      Rodapé da página
+    </footer>
+  </body>
+</html>
+{% endhighlight %}
+
+O usuário mcqueide já está com seu ramo atualizado, e irá começar seu trabalho, sua primeira tarefa é alterar o título da página. Ele define o título da página como **TreinamentoGit**, depois que ele define o título da página ele realiza o commit.
+
+{% highlight html %}
+...
+<h1>Treinamento Git</h1>
+...
+{% endhighlight %}
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git commit -am "Alterando título da página"
+  [mcqueide a1c8022] Alterando título da página
+   1 file changed, 1 insertion(+), 1 deletion(-)
+{% endhighlight %}
+
+Enquanto isso o macaulay está realizando sua atividade na sua branch particular,  ele define o rodapé da página, e o altera para **TreinamentoGit | CopyRight 2017**.
+
+Então o usuário mcqueide irá enviar seu commit para a branch master, lembrando que o commit que ele realizou foi na branch particular dele, então primeiros temos que levar esse commit para a branch master e depois enviá-lo para o repositório remoto. Primeiro ele faz o **checkout** para branch master, executa o `git pull` para ter certeza se não novas alterações, e em seguida faz o **merge** da branch master com sua branch. Depois de realizar o **merge**, se executarmos o `git log` veremos que o commit que ele realizou na branch mcqueide, já se encontra na branch master, então podemos enviar para o repositório remoto com o `git push`.
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git checkout master
+  Switched to branch 'master'
+  Your branch is up-to-date with 'origin/master'.
+  mcqueide:/tmp/repo/treinamentoGit $ git pull
+  Already up-to-date.
+
+mcqueide:/tmp/repo/treinamentoGit $ git merge mcqueide
+  Updating 3524039..a1c8022
+  Fast-forward
+   index.html | 2 +-
+   1 file changed, 1 insertion(+), 1 deletion(-)
+
+mcqueide:/tmp/repo/treinamentoGit $ git log
+  commit a1c80223de43f1f33c6bcb2cbe1d460c5bee1407
+  Author: John Mc.Queide <mcqueide@gmail.com>
+  Date:   Sat Feb 4 11:44:44 2017 -0200
+
+      Alterando título da página
+
+mcqueide:/tmp/repo/treinamentoGit $ git push origin master
+  Counting objects: 3, done.
+  Delta compression using up to 4 threads.
+  Compressing objects: 100% (2/2), done.
+  Writing objects: 100% (3/3), 311 bytes | 0 bytes/s, done.
+  Total 3 (delta 1), reused 0 (delta 0)
+  remote: Resolving deltas: 100% (1/1), completed with 1 local objects.
+  To git@github.com:mcqueide/treinamentoGIT.git
+     3524039..a1c8022  master -> master
+{% endhighlight %}
+
+O usuário macaulay termina sua alteração e realiza o commit na sua branch.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git commit -am "Alterando rodapé da página"
+  [macaulay 0aa318e] Alterando rodapé da página
+   1 file changed, 1 insertion(+), 1 deletion(-)
+{% endhighlight %}
+
+Agora o usuário macaulay vai enviar suas alterações para o repositório remoto, lembrando que ele também está na sua branch particular. Como primeiro passo, o usuário macaulay faz o **checkout** para branch master e nela realiza o **pull**, nisso o git traz as alterações realizada pelo usuário mcqueide para sua branch local, deixando ela atualizada, então ele pode realizar o merge direto da branch master com a branch macaulay, porém isso gera mais um commit de merge no qual queremos evitar, então temos que atualizar sua branch primeiro. Sabendo disso o usuário macaulay muda para sua branch, e para atualizar ela executa o `git rebase`, o **rebase** vai trazer commit a commit e aplicar na branch destino e sem aplicar nenhum commit de merge, caso haja algum conflito. Depois de atualizar sua branch de trabalho, ele volta para a branch master e agora sim realizar o **merge** e envia as alterações para o repositório remoto.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git checkout master
+  Switched to branch 'master'
+  Your branch is up-to-date with 'origin/master'.
+
+macaulay:/tmp/repo/treinamentoGit $ git pull
+  remote: Counting objects: 3, done.
+  remote: Compressing objects: 100% (1/1), done.
+  remote: Total 3 (delta 1), reused 3 (delta 1), pack-reused 0
+  Unpacking objects: 100% (3/3), done.
+  From https://github.com/mcqueide/treinamentoGIT
+    d173696..18ab87e  master     -> origin/master
+  Updating d173696..18ab87e
+  Fast-forward
+  index.html | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+macaulay:/tmp/repo/treinamentoGit $ git checkout macaulay
+  Switched to branch 'macaulay'
+
+macaulay:/tmp/repo/treinamentoGit $ git rebase master macaulay
+  First, rewinding head to replay your work on top of it...
+  Applying: Alterando rodapé da página
+
+macaulay:/tmp/repo/treinamentoGit $ git checkout master
+  Switched to branch 'master'
+  Your branch is up-to-date with 'origin/master'.
+
+macaulay:/tmp/repo/treinamentoGit $ git merge macaulay
+  Updating 18ab87e..e484439
+  Fast-forward
+  index.html | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+macaulay:/tmp/repo/treinamentoGit $ git push origin master
+  Username for 'https://github.com': macaulay1001
+  Password for 'https://macaulay1001@github.com':
+  Counting objects: 3, done.
+  Delta compression using up to 4 threads.
+  Compressing objects: 100% (2/2), done.
+  Writing objects: 100% (3/3), 322 bytes | 0 bytes/s, done.
+  Total 3 (delta 1), reused 0 (delta 0)
+  remote: Resolving deltas: 100% (1/1), completed with 1 local objects.
+  To https://github.com/mcqueide/treinamentoGIT.git
+    18ab87e..e484439  master -> master
 {% endhighlight %}
