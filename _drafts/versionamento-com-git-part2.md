@@ -20,6 +20,7 @@ twitter_text: 'Aprendendo a versionar projetos com Git'
   * [Tratando merge manual](#tratando-merge-manual)
   * [Merge entre branches](#merge-entre-branches)
   * [Merge entre branches quando há conflito](#merge-entre-branches-quando-h-conflito)
+  * [Desfazendo alterações](#desfazendo-alteraes)
   * [Conclusão](#concluso)
 
 ## Introdução
@@ -777,4 +778,362 @@ macaulay:/tmp/repo/treinamentoGit $ git push origin master
   remote: Resolving deltas: 100% (2/2), completed with 1 local objects.
   To https://github.com/mcqueide/treinamentoGIT.git
      ae4a0b1..d717d81  master -> master
+{% endhighlight %}
+
+## Desfazendo alterações
+
+E o que fazemos quando queremos desfazer alguma alteração? Podemos ter várias respostas para essa pergunta, tudo irá depender do status que nosso arquivo se encontra.
+
+Quando o arquivo foi modificado mas não foi adicionado para realização de commit podemos fazer esse arquivo voltar para seu estado original com o `git checkout nome_do_arquivo`.
+
+Para simularmos esse cenário vamos utilizar o seguinte arquivo como início.
+
+{% highlight html %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Treinamento Git</title>
+  </head>
+  <body>
+    <header>
+      <h1>TREINAMENTO GIT</h1>
+    </header>
+
+    <main>
+    </main>
+
+    <footer>
+       Treinamento Git | Copyright 2017
+    </footer>
+  </body>
+</html>
+{% endhighlight %}
+
+Dentro da tag main adicione qualquer texto, por exemplo testando **git checkout** em arquivo. Após isso execute o `git status`.
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git status
+  No ramo master
+  Your branch is up-to-date with 'origin/master'.
+  Changes not staged for commit:
+    (utilize "git add <arquivo>..." para atualizar o que será submetido)
+    (utilize "git checkout -- <arquivo>..." para descartar mudanças no diretório de trabalho)
+
+  	modified:   index.html
+
+  nenhuma modificação adicionada à submissão (utilize "git add" e/ou "git commit -a")
+{% endhighlight %}
+
+> Quando o arquivo tiver o nome igual a de uma branch existente, você pode adicionar -- para o git saber que trata-se de um arquivo. Ficando git checkout -- nome_do_arquivo.
+
+Note que o git já oferece algumas dicas do que você pode fazer com esse arquivo. Ele fala que podemos descartar as alterações feitas com o comando `git checkout`. Então vamos fazer isso e executar o `git status` para ver se ainda tem alguma alteração.
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git checkout index.html
+
+mcqueide:/tmp/repo/treinamentoGit $ git status
+  No ramo master
+  Your branch is up-to-date with 'origin/master'.
+  nada a submeter, diretório de trabalho vazio
+{% endhighlight %}
+
+Ao abrir o arquivo você pode notar que o arquivo foi restaurado para o estado anterior. O git checkout resolveu esse caso, mas e se já tivéssemos executado o git add? O git checkout não vai conseguir resolver. Então vamos ao exemplo. Vamos adicionar novamente qualquer texto na tag main. Depois adicione o arquivo mas não faça o commit e execute o `git status`.
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git add index.html
+
+mcqueide:/tmp/repo/treinamentoGit $ git status
+  No ramo master
+  Your branch is up-to-date with 'origin/master'.
+  Mudanças a serem submetidas:
+    (use "git reset HEAD <file>..." to unstage)
+
+  	modified:   index.html
+{% endhighlight %}
+
+Note que o git novamente dá dicas do que podemos fazer, para esse caso ele sugere que execute o comando `git reset HEAD nome_arquivo`, com isso o git retira o arquivo do estado para ser enviado. Se executarmos o git status novamente veremos que ele só retirou o arquivo do stage, mas não desfez as alterações, para fazer isso podemos executar novamente o `git checkout` e executar o `git status` para verificar se realmente foi desfeitas as alterações.
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git reset HEAD index.html
+  Unstaged changes after reset:
+  M	index.html
+
+mcqueide:/tmp/repo/treinamentoGit $ git status
+  No ramo master
+  Your branch is up-to-date with 'origin/master'.
+  Changes not staged for commit:
+    (utilize "git add <arquivo>..." para atualizar o que será submetido)
+    (utilize "git checkout -- <arquivo>..." para descartar mudanças no diretório de trabalho)
+
+  	modified:   index.html
+
+  nenhuma modificação adicionada à submissão (utilize "git add" e/ou "git commit -a")
+
+mcqueide:/tmp/repo/treinamentoGit $ git checkout index.html
+
+mcqueide:/tmp/repo/treinamentoGit $ git status
+  No ramo master
+  Your branch is up-to-date with 'origin/master'.
+  nada a submeter, diretório de trabalho vazio
+{% endhighlight %}
+
+Se tivermos realizado o commit podemos voltar para algum estado anterior desfazendo as alterações do commit com o git reset. Para simularmos esse cenário, vamos utilizar o arquivo index.html com o seguinte estado.
+
+{% highlight html %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Treinamento Git</title>
+  </head>
+  <body>
+    <header>
+    </header>
+
+    <main>
+    </main>
+
+    <footer>
+    </footer>
+  </body>
+</html>
+{% endhighlight %}
+
+Vamos adicionar um título e rodapé na página e realizar um commit.
+
+{% highlight html %}
+...
+<header>
+  Treinamento Git
+</header>
+...
+<footer>
+  Treinamento Git | CopyRight 2017
+</footer>
+...
+{% endhighlight %}
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git commit -am "Adicionando título e rodapé na página"
+  [master 0ed3c86] Adicionando título e rodapé na página
+   1 file changed, 2 insertions(+)
+{% endhighlight %}
+
+Vamos agora adicionar algum texto no corpo da página. E realizar outro commit.
+
+{% highlight html %}
+...
+<main>
+  Testa o git reset em commit.
+</main>
+...
+{% endhighlight %}
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git commit -am "Adicionando corpo na página"
+  [master 09cbef2] Adicionando corpo na página
+   1 file changed, 1 insertion(+)
+{% endhighlight %}
+
+Se executarmos o `git log` veremos que os dois commit estão lá. Mas digamos que não estamos satisfeitos com a última alteração enviada e desejamos desfazê-la. Para isso vamos recorrer ao comando `git reset`, passando o identificador do commit obtido no `git log` para qual queremos retornar. E depois podemos executar o `git checkout` para desfazer as alterações do arquivo.
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git log
+  commit 09cbef21fe83420a68139ad55b9fd62dcbd9995d
+  Author: John Mc.Queide <mcqueide@gmail.com>
+  Date:   Sat Feb 11 11:07:47 2017 -0200
+
+      Adicionando corpo na página
+
+  commit 0ed3c86a97fec223d7ae11680d6a5c0086dc07ed
+  Author: John Mc.Queide <mcqueide@gmail.com>
+  Date:   Sat Feb 11 10:58:02 2017 -0200
+
+      Adicionando título e rodapé na página
+
+mcqueide:/tmp/repo/treinamentoGit $ git reset 0ed3c86a97fec223d7ae11680d6a5c0086dc07ed
+  Unstaged changes after reset:
+  M	index.html
+
+mcqueide:/tmp/repo/treinamentoGit $ git log
+  commit 0ed3c86a97fec223d7ae11680d6a5c0086dc07ed
+  Author: John Mc.Queide <mcqueide@gmail.com>
+  Date:   Sat Feb 11 10:58:02 2017 -0200
+
+      Adicionando título e rodapé na página
+
+mcqueide:/tmp/repo/treinamentoGit $ git checkout index.html
+{% endhighlight %}
+
+No exemplo, nós desfizemos apenas um commit, mas podemos desfazer quantos commit desejarmos, é necessário apenas passar o commit para qual desejamos retornar.
+
+Mas e se o commit que queremos desfazer está entre outros commits? Se executarmos o git reset, ele irá desfazer inclusive os commits que não queremos desfazer. Para isso vamos usar o git revert, com ele podemos escolher apenas o commit que queremos reverter especificamente.
+
+Para isso vamos preparar nosso teste. Vamos voltar no arquivo index.html para o seguinte estado novamente.
+
+{% highlight html %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Treinamento Git</title>
+  </head>
+  <body>
+    <header>
+    </header>
+
+    <main>
+    </main>
+
+    <footer>
+    </footer>
+  </body>
+</html>
+{% endhighlight %}
+
+Vamos adicionar um título na página e realizar o commit logo em seguida.
+
+{% highlight html %}
+...
+<header>
+  Treinamento Git
+</header>
+...
+{% endhighlight %}
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git commit -am "Adicionando título na página"
+  [master 3e19069] Adicionando título na página
+   1 file changed, 1 insertion(+)
+{% endhighlight %}
+
+Agora adicionaremos um rodapé da página e fazendo o commit em seguida novamente.
+
+{% highlight html %}
+...
+<footer>
+  Treinamento Git | CopyRight 2017
+</footer>
+...
+{% endhighlight %}
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git commit -am "Adicionando rodapé"
+  [master 425e08d] Adicionando rodapé
+   1 file changed, 1 insertion(+)
+{% endhighlight %}
+
+Vamos para a nossa terceira alteração, adicione um corpo na página agora.
+
+{% highlight html %}
+...
+<main>
+  Testando o git reset
+</main>
+...
+{% endhighlight %}
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git commit -am "Adicionando corpo"
+  [master 9e42004] Adicionando corpo
+   1 file changed, 1 insertion(+)
+{% endhighlight %}
+
+Mas não estamos satisfeitos com a mensagem que colocamos no rodapé, e queremos desfazer essa alteração. O problema é que ela está entre a alteração do título e do corpo. Então vamos utilizar o `git revert` para desfazer apenas o commit do rodapé. Para iniciar execute o `git log` para obtermos o identificador do commit, e depois execute o `git revert`.
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git log
+  commit 9e42004c4a873646bfc692f705c4ae43f5d34c34
+  Author: John Mc.Queide <mcqueide@gmail.com>
+  Date:   Sat Feb 11 11:32:50 2017 -0200
+
+      Adicionando corpo
+
+  commit 425e08dbe86907dd157ba37e7907d028b232fb79
+  Author: John Mc.Queide <mcqueide@gmail.com>
+  Date:   Sat Feb 11 11:30:06 2017 -0200
+
+      Adicionando rodapé
+
+  commit 3e19069c9b4f45cca30bee93637d542765b5eddf
+  Author: John Mc.Queide <mcqueide@gmail.com>
+  Date:   Sat Feb 11 11:27:10 2017 -0200
+
+      Adicionando título na página
+
+mcqueide:/tmp/repo/treinamentoGit $ git revert 425e08dbe86907dd157ba37e7907d028b232fb79
+{% endhighlight %}
+
+O git irá abrir um arquivo temporário para passarmos uma mensagem de commit.
+
+{% highlight shell %}
+Revertendo o commit "Adicionando rodapé"
+
+This reverts commit 425e08dbe86907dd157ba37e7907d028b232fb79.
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# No ramo master
+# Seu ramo está à frente de 'origin/master' por 6 submissões.
+#   (use "git push" to publish your local commits)
+#
+# Mudanças a serem submetidas:
+#       modified:   index.html
+#
+{% endhighlight %}
+
+> Lembrando que o que está com # no início da linha não irá na mensagem de commit, por que é linha comentada.
+
+Depois se executarmos o git log novamente veremos que temos um commit de revert, e nosso arquivo ficou sem as alterações realizada no commit revertido.
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git log
+  commit fbdb67f8441b52734458784af252ea439d50c00e
+  Author: John Mc.Queide <mcqueide@gmail.com>
+  Date:   Sat Feb 11 11:38:58 2017 -0200
+
+      Revertendo o commit "Adicionando rodapé"
+
+      This reverts commit 425e08dbe86907dd157ba37e7907d028b232fb79.
+
+  commit 9e42004c4a873646bfc692f705c4ae43f5d34c34
+  Author: John Mc.Queide <mcqueide@gmail.com>
+  Date:   Sat Feb 11 11:32:50 2017 -0200
+
+      Adicionando corpo
+
+  commit 425e08dbe86907dd157ba37e7907d028b232fb79
+  Author: John Mc.Queide <mcqueide@gmail.com>
+  Date:   Sat Feb 11 11:30:06 2017 -0200
+
+      Adicionando rodapé
+
+  commit 3e19069c9b4f45cca30bee93637d542765b5eddf
+  Author: John Mc.Queide <mcqueide@gmail.com>
+  Date:   Sat Feb 11 11:27:10 2017 -0200
+
+      Adicionando título na página
+{% endhighlight %}
+
+{% highlight html %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Treinamento Git</title>
+  </head>
+  <body>
+    <header>
+      Treinamento Git
+    </header>
+
+    <main>
+      Testando o git reset
+    </main>
+
+    <footer>
+    </footer>
+  </body>
+</html>
 {% endhighlight %}
