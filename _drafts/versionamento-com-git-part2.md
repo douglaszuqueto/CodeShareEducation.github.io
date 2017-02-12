@@ -17,7 +17,7 @@ twitter_text: 'Aprendendo a versionar projetos com Git'
   * [Introdução](#introduo)
   * [Configurando chave SSH](#configurando-chave-ssh)
   * [Apresentando merge automático do Git](#Apresentando-merge-automtico-do-git)
-  * [Trabalhando com branches](#trabalhando-com-branches)
+  * [Tratando merge manual](#tratando-merge-manual)
   * [Retornando conteúdo da branch de desenvolvimento para a master](#retornando-contedo-da-branch-de-desenvolvimento-para-a-master)
   * [Conclusão](#concluso)
 
@@ -193,3 +193,167 @@ $ git log
 {% endhighlight %}
 
 Infelizmente ainda ficou o commit de merge no nosso log, isso poderia ter sido evitado se o usuário macaulay estivesse em uma branch diferente, e depois tivesse realizado o envio dessas informações para branch master. Mas veremos isso em breve.
+
+## Tratando merge manual
+
+Nós vimos que a ferramenta é bem inteligente a ponto de conseguir fazer um merge automático, mas as alterações realizadas foram no mesmo arquivo porém em linhas diferentes. Agora o que aconteceria se as alterações tivessem sido na mesma linha? A ferramenta seria capaz ainda de realizar o merge automático, e como ela seria capaz disso?
+
+Para realizarmos o teste, temos o arquivo index.html no seguinte estado:
+
+{% highlight html %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Treinamento Git</title>
+  </head>
+  <body>
+    <h1>Treinamento Git</h1>
+
+    <footer>
+      Copyright - 2017
+    </footer>
+  </body>
+</html>
+{% endhighlight %}
+
+O usuário mcqueide irá adicionar o nome dele no copyright do site, então ele modifica a mensagem de copyright para:
+
+{% highlight html %}
+...
+Copyright - 2017 | Mc.Queide
+...
+{% endhighlight %}
+
+Depois disso ele já realiza o **commit** e o **push** dessas alterações. Agora o usuário macaulay também vai realizar uma alteração nessa mesma linha do copyright, adicionando o nome dele na mensagem de copyright.
+
+{% highlight html %}
+...
+Copyright - 2017 | Macaulay
+...
+{% endhighlight %}
+
+Porém o usuário macaulay está sem as alterações submetidas pelo usuário mcqueide, então ele realiza o **commit**, mas quando ele executa o **push** ele recebe a seguinte mensagem:
+
+{% highlight shell %}
+$ git commit -am "Adicionando Macaulay na mensagem de copyright"
+  [master e5805f4] Adicionando Macaulay na mensagem de copyright
+   1 file changed, 1 insertion(+), 1 deletion(-)
+
+$ git push origin master
+  Username for 'https://github.com': macaulay1001
+  Password for 'https://macaulay1001@github.com':
+  To https://github.com/mcqueide/treinamentoGIT.git
+   ! [rejected]        master -> master (fetch first)
+  error: failed to push some refs to 'https://github.com/mcqueide/treinamentoGIT.git'
+  dica: Updates were rejected because the remote contains work that you do
+  dica: not have locally. This is usually caused by another repository pushing
+  dica: to the same ref. You may want to first integrate the remote changes
+  dica: (e.g., 'git pull ...') before pushing again.
+  dica: See the 'Note about fast-forwards' in 'git push --help' for details.
+{% endhighlight %}
+
+Seu push foi rejeitado novamente, devido o repositório remoto está uma revisão a frente do repositório local do usuário macaulay. Então assim como o usuário macaulay fez no exemplo anterior, ele atualiza sua branch local com o `git pull`. Mas quando ele executa o **pull**, é apresentado o seguinte resultado:
+
+{% highlight shell %}
+$ git pull
+  remote: Counting objects: 3, done.
+  remote: Compressing objects: 100% (1/1), done.
+  remote: Total 3 (delta 1), reused 3 (delta 1), pack-reused 0
+  Unpacking objects: 100% (3/3), done.
+  From https://github.com/mcqueide/treinamentoGIT
+     69e134b..5e78803  master     -> origin/master
+  Mesclagem automática de index.html
+  CONFLITO (conteúdo): conflito de mesclagem em index.html
+  Automatic merge failed; fix conflicts and then commit the result.
+{% endhighlight %}
+
+Diferente da primeira vez, o git não foi capaz de realizar o merge automático, então ele passa a responsabilidade para o usuário. Se abrirmos o arquivo index.html, veremos que ele está no seguinte estado:
+
+{% highlight html %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Treinamento Git</title>
+  </head>
+  <body>
+    <h1>Treinamento Git</h1>
+
+    <footer>
+<<<<<<< HEAD
+      Copyright - 2017 | Macaulay
+=======
+      Copyright - 2017 | Mc.Queide
+\>>>>>>> 5e78803bb99fa975ca550eb8301ec105fe777925
+    </footer>
+  </body>
+</html>
+{% endhighlight %}
+
+Para sinalizar onde houve o conflito, o git adiciona algumas marcações, ele envolve o trecho conflitante com **<<<<<<HEAD** e **>>>>>> Hash da Revisão**. O que está entre **<<<<<<< HEAD** e **=======** são as alterações local, o que está entre **=======** e **>>>>>>>** 5e78803bb99fa975ca550eb8301ec105fe777925 são as alterações atual do repositório remoto. Então o git sinaliza onde houve o conflito e espera que o usuário o resolvê, para resolvermos esse conflito vamos remover a marcação do git e colocarmos os nomes dos dois usuários no copyright, deixando o arquivo com o seguinte estado:
+
+{% highlight html %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Treinamento Git</title>
+  </head>
+  <body>
+    <h1>Treinamento Git</h1>
+
+    <footer>
+      Copyright - 2017 | Macaulay & Mc.Queide
+    </footer>
+  </body>
+</html>
+{% endhighlight %}
+
+Pronto, finalizamos a operação de merge manual, mas para o git esse arquivo ainda está com conflito, então temos que realizar o `git add` no arquivo, o **commit** do merge e após isso realizar o push para o repositório remoto.
+
+{% highlight shell %}
+$ git status
+  No ramo master
+  O seu ramo e 'origin/master' divergiram-se,
+  e cada um tem 1 e 1 submissão, respectivamente.
+    (use "git pull" to merge the remote branch into yours)
+  Você tem caminhos não mesclados.
+    (fixar conflitos e executar "git commit")
+
+  Caminhos não mesclados:
+    (usar "git add <arquivo>..." para marcar resolução)
+
+  	ambos modificados:   index.html
+
+  nenhuma modificação adicionada à submissão (utilize "git add" e/ou "git commit -a")
+
+$ git add index.html
+
+$ git status
+  No ramo master
+  O seu ramo e 'origin/master' divergiram-se,
+  e cada um tem 1 e 1 submissão, respectivamente.
+    (use "git pull" to merge the remote branch into yours)
+  Todos os conflitos foram corrigidos mas você continua mesclando.
+    (use  "git commit" para concluir a mesclagem)
+
+  Mudanças a serem submetidas:
+
+  	modified:   index.html
+
+$ git commit -m "Realizando o merge no arquivo index.html"
+  [master 2b4547a] Realizando o merge no arquivo index.html
+
+$ git push origin master
+  Username for 'https://github.com': macaulay1001
+  Password for 'https://macaulay1001@github.com':
+  Counting objects: 6, done.
+  Delta compression using up to 4 threads.
+  Compressing objects: 100% (4/4), done.
+  Writing objects: 100% (6/6), 605 bytes | 0 bytes/s, done.
+  Total 6 (delta 2), reused 0 (delta 0)
+  remote: Resolving deltas: 100% (2/2), completed with 1 local objects.
+  To https://github.com/mcqueide/treinamentoGIT.git
+     5e78803..2b4547a  master -> master
+{% endhighlight %}
