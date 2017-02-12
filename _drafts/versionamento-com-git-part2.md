@@ -21,6 +21,7 @@ twitter_text: 'Aprendendo a versionar projetos com Git'
   * [Merge entre branches](#merge-entre-branches)
   * [Merge entre branches quando há conflito](#merge-entre-branches-quando-h-conflito)
   * [Desfazendo alterações](#desfazendo-alteraes)
+  * [Backup de alterações que não foram enviado por commit](#backup-de-alteraes-que-no-foram-enviado-por-commit)
   * [Conclusão](#concluso)
 
 ## Introdução
@@ -1137,3 +1138,99 @@ mcqueide:/tmp/repo/treinamentoGit $ git log
   </body>
 </html>
 {% endhighlight %}
+
+## Backup de alterações que não foram enviado por commit
+
+E quando temos alterações realizadas em algum arquivos e que não foram enviadas no commit ainda, e queremos realizar o `git pull`, o git apresenta um alerta, impedindo de realizarmos a operação, explicando que nossas alterações podem ser perdidas. O que podemos fazer para resolver isso? Uma alternativa seria enviar essas alterações com o commit, mas e se não quisermos enviar essas alterações ainda porque elas não estão finalizadas. Então que tal fazer o backup das alterações em um outro arquivo e depois executar o `git checkout` para desfazer as alterações no arquivo versionado, realizar o `git pull`, e então trazer as alterações nas quais estamos trabalhando de volta para o arquivo. Isso resolveria o problema, mas será que o git não tem uma forma mais fácil para resolvermos esse cenário?
+
+Apresento o `git stash`, ao executá-lo o git move todos os arquivos que estão modificados para um local separado. Deixando o repositório local sem modificações e pronto para fazer a operação de atualização.
+
+O nosso usuário macaulay ficou um tempo sem atualizar seu repositório, e agora quer atualizar ele só que o git não deixa.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git pull
+  remote: Counting objects: 17, done.
+  remote: Compressing objects: 100% (5/5), done.
+  remote: Total 17 (delta 7), reused 17 (delta 7), pack-reused 0
+  Unpacking objects: 100% (17/17), done.
+  From https://github.com/mcqueide/treinamentoGIT
+     d717d81..fbdb67f  master     -> origin/master
+  Updating d717d81..fbdb67f
+  error: Your local changes to the following files would be overwritten by merge:
+  	index.html
+  Please, commit your changes or stash them before you can merge.
+  Aborting
+{% endhighlight %}
+
+Porém ele não finalizou seu trabalho ainda e não quer enviar ele incompleto. Note que o git dá uma dica, ele avisa o usuário para realizar o commit das alterações ou realizar o stash delas. Vamos realizar o **stash** e em seguida o `git status` para verificar o estado dos arquivos.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git stash
+  Saved working directory and index state WIP on master: d717d81 Atualizando o rodapé do documento
+  HEAD is now at d717d81 Atualizando o rodapé do documento
+
+macaulay:/tmp/repo/treinamentoGit $ git status
+  No ramo master
+  Seu ramo está atrás de 'origin/master' em 7 submissões, e pode ser avançado.
+    (use "git pull" to update your local branch)
+  nada a submeter, diretório de trabalho vazio
+{% endhighlight %}
+
+Como falado antes o git fez uma cópia dos arquivos, e deixou o repositório inalterado, com isso podemos realizar o `git pull`.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git pull
+  Updating d717d81..fbdb67f
+  Fast-forward
+   index.html | 5 ++---
+   1 file changed, 2 insertions(+), 3 deletions(-)
+{% endhighlight %}
+
+Agora o git busca as alterações e aplica no repositório local. Mas agora como usuário recupera a cópia dos seus arquivos realizado pelo git. Com o comando `git stash list`, o git apresenta os stash disponíveis.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git stash list
+stash@{0}: WIP on master: d717d81 Atualizando o rodapé do documento
+{% endhighlight %}
+
+Para aplicarmos as alterações novamente, temos duas alternativas, podemos fazer com o `git stash apply` ou `git stash pop`. A diferença entre os dois é que o apply apenas aplica as modificações deixando o stash ainda disponível e esse pode ser removido depois com o `git stash drop`, enquanto o pop recupera e descarta o último stash. Vamos fazer o teste com o **apply**.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git stash apply stash@{0}
+  No ramo master
+  Seu ramo está à frente de 'origin/master' por 1 submissão.
+    (use "git push" to publish your local commits)
+  Changes not staged for commit:
+    (utilize "git add <arquivo>..." para atualizar o que será submetido)
+    (utilize "git checkout -- <arquivo>..." para descartar mudanças no diretório de trabalho)
+
+  	modified:   index.html
+
+  nenhuma modificação adicionada à submissão (utilize "git add" e/ou "git commit -a")
+{% endhighlight %}
+
+Depois de aplicar podemos remover o stash com o comando git stash drop.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git stash drop stash@{0}
+  Dropped stash@{0} (3e54be25fdda2eee3e55c463e25e167ff4af1422)
+{% endhighlight %}
+
+Para pegarmos o último stash e já removê-lo logo em seguida podemos usar o `git stash pop`.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git stash pop
+  No ramo master
+  Seu ramo está à frente de 'origin/master' por 1 submissão.
+    (use "git push" to publish your local commits)
+  Changes not staged for commit:
+    (utilize "git add <arquivo>..." para atualizar o que será submetido)
+    (utilize "git checkout -- <arquivo>..." para descartar mudanças no diretório de trabalho)
+
+  	modified:   index.html
+
+  nenhuma modificação adicionada à submissão (utilize "git add" e/ou "git commit -a")
+  Dropped refs/stash@{0} (d65e6496144c2fbd76b29e85ed278f70a1dea6c0)
+{% endhighlight %}
+
+Se executarmos o `git stash list`, veremos que não tem nenhum stash.
