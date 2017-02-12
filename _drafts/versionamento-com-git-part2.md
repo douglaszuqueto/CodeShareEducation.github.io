@@ -19,6 +19,7 @@ twitter_text: 'Aprendendo a versionar projetos com Git'
   * [Apresentando merge automático do Git](#Apresentando-merge-automtico-do-git)
   * [Tratando merge manual](#tratando-merge-manual)
   * [Merge entre branches](#merge-entre-branches)
+  * [Merge entre branches quando há conflito](#merge-entre-branches-quando-h-conflito)
   * [Conclusão](#concluso)
 
 ## Introdução
@@ -498,4 +499,282 @@ macaulay:/tmp/repo/treinamentoGit $ git push origin master
   remote: Resolving deltas: 100% (1/1), completed with 1 local objects.
   To https://github.com/mcqueide/treinamentoGIT.git
     18ab87e..e484439  master -> master
+{% endhighlight %}
+
+## Merge entre branches quando há conflito
+
+Acabamos de ver como realizar o merge entre branches, mas e quando ocorre conflito? Como podemos resolver eles?
+
+Para simularmos esse cenário, vamos trabalhar com o seguinte arquivo **index.html**.
+
+{% highlight html %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Treinamento Git</title>
+  </head>
+  <body>
+    <header>
+        <h1>Título da Página</h1>
+    </header>
+
+    <main>
+      Conteúdo da página
+    </main>
+
+    <footer>
+      Rodapé da página
+    </footer>
+  </body>
+</html>
+{% endhighlight %}
+
+O usuário mcqueide vai iniciar suas alterações na página, ele começa alterando o título da página para **<h1>Treinamento Git</h1>**, e realiza o commit.
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git commit -am "Alterando o título da página"
+  [mcqueide a8680e9] Alterando o título da página
+  1 file changed, 1 insertion(+), 1 deletion(-)
+{% endhighlight %}
+
+Agora ele altera o corpo da página, com o seguinte conteúdo:
+
+{% highlight html %}
+...
+<main>
+  <p>Está é uma página para simulação de conflito com merge de branchs.</p>
+</main>
+...
+{% endhighlight %}
+
+E realiza o commit das alterações:
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git commit -am "Alterando o corpo da página"
+  [mcqueide 3c96082] Alterando o corpo da página
+   1 file changed, 1 insertion(+), 1 deletion(-)
+{% endhighlight %}
+
+E por último ele realiza uma alteração no rodapé da página:
+
+{% highlight html %}
+...
+<footer>
+  Treinamento Git | Copyright 2017
+</footer>
+...
+{% endhighlight %}
+
+E ele executa o commit:
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git commit -am "Alterando o rodapé da página"
+  [mcqueide ae4a0b1] Alterando o rodapé da página
+   1 file changed, 1 insertion(+), 1 deletion(-)
+{% endhighlight %}
+
+Então ele decide enviar os commit para o repositório remoto.
+
+{% highlight shell %}
+mcqueide:/tmp/repo/treinamentoGit $ git checkout master
+  Switched to branch 'master'
+  Your branch is up-to-date with 'origin/master'.
+
+mcqueide:/tmp/repo/treinamentoGit $ git pull
+  Already up-to-date.
+
+mcqueide:/tmp/repo/treinamentoGit $ git merge mcqueide
+  Updating 1df326a..ae4a0b1
+  Fast-forward
+   index.html | 6 +++---
+   1 file changed, 3 insertions(+), 3 deletions(-)
+
+mcqueide:/tmp/repo/treinamentoGit $ git push origin master
+  Username for 'https://github.com': mcqueide
+  Password for 'https://mcqueide@github.com':
+  Counting objects: 9, done.
+  Delta compression using up to 4 threads.
+  Compressing objects: 100% (6/6), done.
+  Writing objects: 100% (9/9), 914 bytes | 0 bytes/s, done.
+  Total 9 (delta 3), reused 0 (delta 0)
+  remote: Resolving deltas: 100% (3/3), completed with 1 local objects.
+  To https://github.com/mcqueide/treinamentoGIT.git
+     1df326a..ae4a0b1  master -> master
+{% endhighlight %}
+
+O usuário macaulay estava trabalhando paralelamente com o usuário mcqueide, e portanto não têm as alterações do outro usuário na sua branch. Ele também realiza alterações no documento. Ele começa alterando o título da página e logo em seguida executa o `git commit`.
+
+{% highlight html %}
+...
+<h1>TREINAMENTO GIT</h1>
+...
+{% endhighlight %}
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git commit -am "Atualizando o título do documento"
+  [macaulay 92aa3d4] Atualizando o título do documento
+   1 file changed, 1 insertion(+), 1 deletion(-)
+{% endhighlight %}
+
+Agora o usuário macaulay atualiza o conteúdo do rodapé realizando o commit em seguida.
+
+{% highlight html %}
+...
+<footer>
+ TREINAMENTO GIT | COPYRIGHT 2017
+</footer>
+...
+{% endhighlight %}
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git commit -am "Atualizando o rodapé do documento"
+  [macaulay afab70c] Atualizando o rodapé do documento
+   1 file changed, 1 insertion(+), 1 deletion(-)
+{% endhighlight %}
+
+Terminando essas alterações, ele deseja enviar suas alterações para o repositório remoto. Para isso, ele realiza o mesmo processo que já realizamos algumas vezes aqui, ele vai mudar para a branch master, atualizar ela, e depois voltar para a branch macaulay para atualizar ela com o conteúdo da master.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git checkout master
+  Switched to branch 'master'
+  Your branch is up-to-date with 'origin/master'.
+
+macaulay:/tmp/repo/treinamentoGit $ git pull
+  remote: Counting objects: 9, done.
+  remote: Compressing objects: 100% (3/3), done.
+  remote: Total 9 (delta 3), reused 9 (delta 3), pack-reused 0
+  Unpacking objects: 100% (9/9), done.
+  From https://github.com/mcqueide/treinamentoGIT
+     1df326a..ae4a0b1  master     -> origin/master
+  Updating 1df326a..ae4a0b1
+  Fast-forward
+   index.html | 6 +++---
+   1 file changed, 3 insertions(+), 3 deletions(-)
+
+macaulay:/tmp/repo/treinamentoGit $ git checkout macaulay
+  Switched to branch 'macaulay'
+{% endhighlight %}
+
+Então agora ele está pronto para realizar o rebase, porém ao realizar o rebase ele obtém o seguinte resultado na sua tela do terminal.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git rebase master macaulay
+  First, rewinding head to replay your work on top of it...
+  Applying: Atualizando o título do documento
+  Using index info to reconstruct a base tree...
+  M	index.html
+  Falling back to patching base and 3-way merge...
+  Mesclagem automática de index.html
+  CONFLITO (conteúdo): conflito de mesclagem em index.html
+  error: Failed to merge in the changes.
+  Patch failed at 0001 Atualizando o título do documento
+  The copy of the patch that failed is found in: .git/rebase-apply/patch
+
+  When you have resolved this problem, run "git rebase --continue".
+  If you prefer to skip this patch, run "git rebase --skip" instead.
+  To check out the original branch and stop rebasing, run "git rebase --abort".
+{% endhighlight %}
+
+Essa mensagem informa que houve conflito durante o rebase, lembrando que o git rebase aplica commit a commit na branch que está sendo atualizada, na aplicação do primeiro commit houve um conflito que deve ser tratado, e o próprio git já dá uma dica que após  o tratamento do merge o usuário pode dar continuidade do rebase com o comando `git rebase --continue`. Então vamos tratar o primeiro conflito.
+
+{% highlight html %}
+...
+<header>
+<<<<<<< ae4a0b1e66a0fcbd58fcf0f59894f4e1dd4f7ab2
+    <h1>Treinamento Git</h1>
+=======
+  <h1>TREINAMENTO GIT</h1>
+\>>>>>>> Atualizando o título do documento
+</header>
+...
+{% endhighlight %}
+
+O primeiro conflito foi exatamente na tag header, que foi a aplicação do primeiro commit, o usuário macaulay escolhe o título que ele mesmo colocou.
+
+{% highlight html %}
+<header>
+      <h1>TREINAMENTO GIT</h1>
+</header>
+{% endhighlight %}
+
+Depois ele realiza o `git add` para informar para o git que o merge foi realizado e executa o `git rebase --continue` para dar continuidade no processo de rebase.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git add index.html
+
+macaulay:/tmp/repo/treinamentoGit $ git rebase --continue
+  Applying: Atualizando o título do documento
+  Applying: Atualizando o rodapé do documento
+  Using index info to reconstruct a base tree...
+  M	index.html
+  Falling back to patching base and 3-way merge...
+  Mesclagem automática de index.html
+  CONFLITO (conteúdo): conflito de mesclagem em index.html
+  error: Failed to merge in the changes.
+  Patch failed at 0002 Atualizando o rodapé do documento
+  The copy of the patch that failed is found in: .git/rebase-apply/patch
+
+  When you have resolved this problem, run "git rebase --continue".
+  If you prefer to skip this patch, run "git rebase --skip" instead.
+  To check out the original branch and stop rebasing, run "git rebase --abort".
+{% endhighlight %}
+
+E novamente ocorre um novo conflito, porém dessa vez podemos perceber que o git conseguiu aplicar o primeiro e o segundo commit, dando o conflito apenas no terceiro commit que é o do rodapé, onde os dois usuário realizaram modificações.
+
+{% highlight html %}
+...
+<footer>
+<<<<<<< d7aa763ca2ae4899f414fe25f39bf45f27c31ce5
+  Treinamento Git | Copyright 2017
+=======
+  TREINAMENTO GIT | COPYRIGHT 2017
+\>>>>>>> Atualizando o rodapé do documento
+</footer>
+...
+{% endhighlight %}
+
+Dessa vez o usuário macaulay escolhe manter o trecho do usuário mcqueide.
+
+{% highlight html %}
+...
+<footer>
+  Treinamento Git | Copyright 2017
+</footer>
+...
+{% endhighlight %}
+
+E novamente executa o `git add` para informar ao git que foi realizado o merge. E executa o `git rebase --continue` novamente. E como dessa vez era o último commit conflitante então ele aplica o commit e finaliza o processo.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git add index.html
+
+macaulay:/tmp/repo/treinamentoGit $ git rebase --continue
+  Applying: Atualizando o rodapé do documento
+{% endhighlight %}
+
+Agora o usuário macaulay pode retornar para a branch master e continuar o processo de envio de suas alterações para o repositório remoto.
+
+{% highlight shell %}
+macaulay:/tmp/repo/treinamentoGit $ git checkout master
+  Switched to branch 'master'
+  Your branch is up-to-date with 'origin/master'.
+
+macaulay:/tmp/repo/treinamentoGit $ git merge macaulay
+  Updating ae4a0b1..d717d81
+  Fast-forward
+   index.html | 4 ++--
+   1 file changed, 2 insertions(+), 2 deletions(-)
+
+macaulay:/tmp/repo/treinamentoGit $ git push origin master
+  Username for 'https://github.com': macaulay1001
+  Password for 'https://macaulay1001@github.com':
+  Counting objects: 6, done.
+  Delta compression using up to 4 threads.
+  Compressing objects: 100% (4/4), done.
+  Writing objects: 100% (6/6), 569 bytes | 0 bytes/s, done.
+  Total 6 (delta 2), reused 0 (delta 0)
+  remote: Resolving deltas: 100% (2/2), completed with 1 local objects.
+  To https://github.com/mcqueide/treinamentoGIT.git
+     ae4a0b1..d717d81  master -> master
 {% endhighlight %}
