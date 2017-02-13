@@ -22,6 +22,7 @@ twitter_text: 'Aprendendo a versionar projetos com Git'
   * [Merge entre branches quando há conflito](#merge-entre-branches-quando-h-conflito)
   * [Desfazendo alterações](#desfazendo-alteraes)
   * [Backup de alterações que não foram enviado por commit](#backup-de-alteraes-que-no-foram-enviado-por-commit)
+  * [Configurando aliases](#configurando-aliases)
   * [Conclusão](#concluso)
 
 ## Introdução
@@ -1234,6 +1235,42 @@ macaulay:/tmp/repo/treinamentoGit $ git stash pop
 {% endhighlight %}
 
 Se executarmos o `git stash list`, veremos que não tem nenhum stash.
+
+## Configurando aliases
+
+Sabe aquele dica que o professor de matemática falava só depois que ele explicou todo o conteúdo? Então agora vou apresentá-los o **alias**. O alias é um apelido que você escolhe para um comando git ou a execução de uma cadeia de comandos, tornando aquele comando menos verboso, mais claro para você, ou deixá-lo de uma forma que você já esteja acostumado, caso já use alguma outra ferramenta de versionamento.
+
+Para fazer configuração de aliases, devemos alterar nosso arquivo .gitconfig, e se ele não existir podemos apenas criar e configurá-lo. O local desse arquivo é na pasta do seu usuário no sistema operacional. Se for windows ele estará em `C:\Users\seu_usuario\.gitconfig`, se for linux ou mac você pode encontrá-lo em `/home/seu_usuario/.gitconfig`.
+
+Para configurar nosso primeiro alias, vamos abrir o arquivo **.gitconfig** e adicionar uma nova linha com **[alias]** caso não exista, com isso é como se tivéssemos adicionando umas nova seção de configuração no nosso arquivo. Abaixo dessa linha iremos configurar nossos aliases.
+
+O primeiro a ser configurado será o alias para commit, para quem já usou o SVN, talvez esteja acostumado a verificar o status dos arquivos com **st**.
+
+{% highlight shell %}
+[alias]
+	st = status
+{% endhighlight %}
+
+Agora toda vez que você for querer verificar o status dos arquivos no seu repositório local é só executar o comando `git st`. Se você quiser adicionar outros aliases, é só criar novas linhas e passar o alias e seu comando respectivo. Como no exemplo a seguir.
+
+{% highlight shell %}
+[alias]
+	st = status
+	ci = commit
+	br = branch
+	df = diff
+{% endhighlight %}
+
+Além de aliases para simples comandos, podemos criar para execução de vários comando seguidos, para isso é só adicionar **!** no começo da linha e encadear os comandos com **&&**, e os comandos serão executados na ordem em que foram declarados um após o outro. Isso pode facilitar por exemplo o processo de envio dos arquivos modificados para a branch master, antes tínhamos que fazer o checkout para a branch master, atualizar ela, depois voltar para a branch particular, rodar o rebase para então voltar para a branch master novamente, realizar o merge e enviar os arquivos com o git push. Para simplificarmos todo esse processo podemos apenas executar `git envia`. Sério, para isso, só precisamos configurar o alias.
+
+{% highlight shell %}
+[alias]
+	envia = !git checkout master && git pull && git checkout sua_branch && git rebase master sua_branch && git checkout master && git merge sua_branch && git push
+{% endhighlight %}
+
+> Lembrando que isso não isenta o usuário de fazer tratamentos de conflitos manuais, se houver algum conflito a execução será interrompida para ser realizado o tratamento.
+
+Agora para realizar o processo que precisávamos de vários comando, precisamos apenas executar `git envia`.
 
 ## Conclusão
 
