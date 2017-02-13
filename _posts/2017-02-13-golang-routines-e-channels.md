@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Golang: Goroutines e Channels"
-date: 2017-02-09 13:40:21
+date: 2017-02-13 23:54:32
 author: wendell
 image:
 description: 'Aprenda a usar Goroutines e Channels em Go'
