@@ -52,7 +52,7 @@ func main() {
 }
 {% endhighlight %}
 
-No arquivo acima criamos a função `plus` que recebe dois parâmetros e retorna a soma dos mesmos, a execução dessa função ocorre normalmente, pois não invocamos ela como uma `Goroutine`, dessa maneira os nossos resultados sempre serão apresentados na mesma ordem, pois ao chamar a função `plus` ele espera a execução completa da função para depois  porém com algumas alterações, podemos fazer esse código trabalhar de forma concorrente. Vamos alterar nosso arquivo deixando ele da seguinte maneira:
+No arquivo acima criamos a função `plus` que recebe dois parâmetros e retorna a soma dos mesmos, a execução dessa função ocorre normalmente, pois não invocamos ela como uma `Goroutine`, dessa maneira os nossos resultados sempre serão apresentados na mesma ordem, pois ao chamar a função `plus` ele espera a execução completa da função para depois continuar a execução da próxima instrução. Porém com algumas alterações podemos fazer esse código trabalhar de forma concorrente. Vamos alterar nosso arquivo deixando ele da seguinte maneira:
 
 {% highlight go %}
 // main.go
