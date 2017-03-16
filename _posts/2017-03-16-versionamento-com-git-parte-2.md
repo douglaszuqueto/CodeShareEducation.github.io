@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Versionamento com Git Parte 2"
-date: 2017-02-12 13:40:21
+date: 2017-03-16 17:39:48
 author: mcqueide
 image:
 description: 'Aprendendo a versionar projetos com Git'
@@ -12,6 +12,7 @@ categories:
 - Controle de versão
 twitter_text: 'Aprendendo a versionar projetos com Git'
 ---
+
 
 ## Sumário
   * [Introdução](#introduo)
@@ -412,7 +413,7 @@ mcqueide:/tmp/repo/treinamentoGit $ git commit -am "Alterando título da página
    1 file changed, 1 insertion(+), 1 deletion(-)
 {% endhighlight %}
 
-Enquanto isso o **macaulay** está realizando sua atividade na sua branch particular,  ele define o rodapé da página, e o altera para **TreinamentoGit | CopyRight 2017**.
+Enquanto isso o **macaulay** está realizando sua atividade na sua branch particular,  ele define o rodapé da página, e o altera para `TreinamentoGit CopyRight 2017`.
 
 Então o usuário **mcqueide** irá enviar seu `commit` para a branch master, lembrando que o commit que ele realizou foi na branch particular dele, então primeiros temos que levar esse commit para a branch master e depois enviá-lo para o repositório remoto. Primeiro ele faz o **checkout** para branch master, executa o `git pull` para ter certeza se não novas alterações, e em seguida faz o `merge` da **branch master** com sua branch. Depois de realizar o **merge**, se executarmos o `git log` veremos que o commit que ele realizou na **branch mcqueide**, já se encontra na branch master, então podemos enviar para o repositório remoto com o `git push`.
 
