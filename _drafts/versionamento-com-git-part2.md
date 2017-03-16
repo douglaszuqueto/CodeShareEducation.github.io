@@ -5,7 +5,7 @@ date: 2017-02-12 13:40:21
 author: mcqueide
 image:
 description: 'Aprendendo a versionar projetos com Git'
-tags: # DÊ PREFERÊNCIA PARA TAGS QUE JÁ EXISTAM
+tags:
 - git
 - versionamento
 categories:
@@ -27,13 +27,13 @@ twitter_text: 'Aprendendo a versionar projetos com Git'
 
 ## Introdução
 
-No post sobre git passado, abordamos muitas operações porém com cenários bem simples. Em nenhum deles tivemos alteração concorrentes por usuários diferentes em um mesmo arquivo. E isso é algo comum de acontecer em um ambiente de trabalho. Quando isso ocorre nem sempre a ferramenta consegue realizar os merges de forma automática, e essa tarefa acaba virando responsabilidade de quem está operando o repositório. Veremos como deixar essas tarefas mais fáceis.
+No **[artigo anterior](http://blog.codeshare.com.br/versionamento-com-git/)** sobre Git, abordamos muitas operações porém com cenários bem simples. Em nenhum deles tivemos alteração concorrentes por usuários diferentes em um mesmo arquivo. E isso é algo comum de acontecer em um ambiente de trabalho. Quando isso ocorre nem sempre a ferramenta consegue realizar os merges de forma automática, e essa tarefa acaba virando responsabilidade de quem está operando o repositório. Veremos como deixar essas tarefas mais fáceis.
 
-Se você também está cansado de ficar digitando suas senhas toda vez que vai realizar um push, ensinaremos como utilizar as chaves ssh, onde antes de toda operação de push, o git irá procurar por ela e usá-la para sua autenticação no repositório remoto. Nesse material você aprenderá sobre os alias, chega de ficar digitando tantos comandos um atrás de outros para tarefas que você acaba tendo que executar várias vezes.
+Se você também está cansado de ficar digitando suas senhas toda vez que vai realizar um push, ensinaremos como utilizar as **chaves SSH**, onde antes de toda operação de push, o git irá procurar por ela e usá-la para sua autenticação no repositório remoto. Nesse artigo você também aprenderá sobre os alias, chega de ficar digitando tantos comandos um atrás de outros para tarefas que você acaba tendo que executar várias vezes.
 
 ## Configurando chave SSH
 
-Antes de configurarmos nossa chave ssh temos que criá-la primeiro, para isso execute o comando abaixo.
+Antes de configurarmos nossa **chave SSH** temos que criá-la, para isso execute o comando abaixo:
 
 {% highlight shell %}
 $ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
@@ -43,19 +43,19 @@ $ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
   Enter same passphrase again: [Type passphrase again]
 {% endhighlight %}
 
-E você pode verificar por possíveis chaves cadastradas com esse comando.
+E você pode verificar por possíveis chaves cadastradas com o seguinte comando:
 
 {% highlight shell %}
 $ ls -al ~/.ssh
 {% endhighlight %}
 
-Depois de gerada a chave, visite seu github, e vá para a área de configuração, no menu lateral esquerdo ache o menu **SSH and GPG keys**, aperte o botão **New SSH key**, e cole sua chave que você vai obter através do comando:
+Depois de gerada a chave, vá para seu perfil no Github, vá para a área de configuração e no menu lateral esquerdo ache o menu **SSH and GPG keys**, aperte o botão **New SSH key**, e cole sua chave que você vai obter através do comando:
 
 {% highlight shell %}
 $ cat ~/.ssh/id_rsa.pub
 {% endhighlight %}
 
-Pronto com isso você não terá que ficar digitando sua senha do Git toda vez que for realizar um push, a autenticação será baseada na sua chave ssh.
+Pronto com isso você não terá que ficar digitando sua senha do Git toda vez que for realizar um push. A autenticação será baseada na sua chave ssh.
 
 ![Adicionando chave SSH](../assets/img/post-git/personal-settings.png "Adicionando chave SSH")
 
@@ -63,7 +63,7 @@ Pronto com isso você não terá que ficar digitando sua senha do Git toda vez q
 
 É muito comum termos várias pessoas trabalhando em um mesmo projeto, com isso ocorrerão vezes onde duas ou mais pessoas irão modificar um mesmo arquivo, quando isso ocorre o Git faz um processo de merge dessas modificações, pegando tanto as alterações do usuário A e do usuário B e juntado elas no mesmo arquivo.
 
-Para demonstrar esse comportamento teremos dois usuários, mcqueide e macaulay trabalhando no mesmo repositórios, tanto usuário mcqueide quanto o macaulay irão realizar uma modificação no nosso arquivo index.html, e a ferramenta tratará esse merge de uma forma automática e inteligente.
+Para demonstrar esse comportamento teremos dois usuários, **mcqueide** e **macaulay** trabalhando no mesmo repositório, ambos usuários irão realizar uma modificação no nosso arquivo `index.html` e a ferramenta tratará esse merge de uma forma automática e inteligente.
 
 Segue o arquivo atual no nosso repositório:
 
@@ -80,7 +80,7 @@ Segue o arquivo atual no nosso repositório:
 </html>
 {% endhighlight %}
 
-O usuário mcqueide alterou o título da página para:
+O usuário **mcqueide** alterou o título da página para:
 
 {% highlight html %}
 ...
@@ -88,7 +88,7 @@ O usuário mcqueide alterou o título da página para:
 ...
 {% endhighlight %}
 
-Já o usuário macaulay alterou a tag h1 no corpo da página:
+Já o usuário **macaulay** alterou a tag `h1` no corpo da página:
 
 {% highlight html %}
 ...
@@ -96,7 +96,7 @@ Já o usuário macaulay alterou a tag h1 no corpo da página:
 ...
 {% endhighlight %}
 
-Agora ambos irão enviar essas modificações para o servidor remoto. O primeiro a enviar é o usuário mcqueide, ele realiza o `git commit` e depois faz um `git push` no repositório. Para ele foi tudo ok, não houve nenhum problema. Depois o usuário macaulay decide enviar suas alterações também, ele realiza seu **commit** até aí tudo bem, porém quando ele tenta realizar o **push** acontece o seguinte:
+Agora ambos irão enviar essas modificações para o servidor remoto. O primeiro a enviar é o usuário **mcqueide**, ele realiza o `git commit` e depois faz um `git push` no repositório. Para ele foi tudo ok, não houve nenhum problema. Depois o usuário **macaulay** decide enviar suas alterações também, ele realiza seu `commit` até aí tudo bem, porém quando ele tenta realizar o `push` acontece o seguinte:
 
 {% highlight shell %}
 $ git push origin master
@@ -112,7 +112,7 @@ $ git push origin master
   dica: See the 'Note about fast-forwards' in 'git push --help' for details.
 {% endhighlight %}
 
-O git informa que o push do macaulay foi rejeitado, isso porque sua cópia local está desatualizada em relação ao repositório remoto, pois tem um novo commit do usuário mcqueide, o próprio git já dá uma dica, solicitando que ele atualize seu repositório para que fique atualizado em relação ao repositório remoto, depois disso o macaulay realiza o pull e o git direciona ele para um arquivo de texto, apresentando uma tela em seu terminal para ele digitar uma mensagem de merge:
+O git informa que o `push` do **macaulay** foi rejeitado, isso porque sua cópia local está desatualizada em relação ao repositório remoto, pois tem um novo commit do usuário **mcqueide**, o próprio git já dá uma dica, solicitando que ele atualize seu repositório para que fique atualizado em relação ao repositório remoto, depois disso o **macaulay** realiza o `pull` e o git direciona ele para um arquivo de texto, apresentando uma tela em seu terminal para ele digitar uma mensagem de merge:
 
 {% highlight shell %}
 Merge branch 'master' of https://github.com/mcqueide/treinamentoGIT
@@ -129,7 +129,7 @@ Merge branch 'master' of https://github.com/mcqueide/treinamentoGIT
 
 > Não é necessário apagar as linhas que estão comentadas com #, porque elas não irão para sua mensagem de commit.
 
-Feito isso o git já informa que foi realizado um merge automático e ele realiza novamente o comando `git push` e agora seu push é aceito.
+Feito isso o git já informa que foi realizado um merge automático e ele realiza novamente o comando `git push` e agora seu `push` é aceito.
 
 {% highlight shell %}
 $ git pull
@@ -202,7 +202,7 @@ Infelizmente ainda ficou o commit de merge no nosso log, isso poderia ter sido e
 
 Nós vimos que a ferramenta é bem inteligente a ponto de conseguir fazer um merge automático, mas as alterações realizadas foram no mesmo arquivo porém em linhas diferentes. Agora o que aconteceria se as alterações tivessem sido na mesma linha? A ferramenta seria capaz ainda de realizar o merge automático, e como ela seria capaz disso?
 
-Para realizarmos o teste, temos o arquivo index.html no seguinte estado:
+Para realizarmos o teste, temos o arquivo `index.html` no seguinte estado:
 
 {% highlight html %}
 <!DOCTYPE html>
@@ -221,7 +221,7 @@ Para realizarmos o teste, temos o arquivo index.html no seguinte estado:
 </html>
 {% endhighlight %}
 
-O usuário mcqueide irá adicionar o nome dele no copyright do site, então ele modifica a mensagem de copyright para:
+O usuário **mcqueide** irá adicionar o nome dele no **copyright** do site, então ele modifica a mensagem de copyright para:
 
 {% highlight html %}
 ...
@@ -229,7 +229,7 @@ Copyright - 2017 | Mc.Queide
 ...
 {% endhighlight %}
 
-Depois disso ele já realiza o **commit** e o **push** dessas alterações. Agora o usuário macaulay também vai realizar uma alteração nessa mesma linha do copyright, adicionando o nome dele na mensagem de copyright.
+Depois disso ele já realiza o `commit` e o `push` dessas alterações. Agora o usuário **macaulay** também vai realizar uma alteração nessa mesma linha do **copyright**, adicionando o nome dele na mensagem de copyright.
 
 {% highlight html %}
 ...
@@ -237,7 +237,7 @@ Copyright - 2017 | Macaulay
 ...
 {% endhighlight %}
 
-Porém o usuário macaulay está sem as alterações submetidas pelo usuário mcqueide, então ele realiza o **commit**, mas quando ele executa o **push** ele recebe a seguinte mensagem:
+Porém o usuário **macaulay** está sem as alterações submetidas pelo usuário mcqueide, então ele realiza o `commit`, mas quando ele executa o `push` ele recebe a seguinte mensagem:
 
 {% highlight shell %}
 $ git commit -am "Adicionando Macaulay na mensagem de copyright"
@@ -257,7 +257,7 @@ $ git push origin master
   dica: See the 'Note about fast-forwards' in 'git push --help' for details.
 {% endhighlight %}
 
-Seu push foi rejeitado novamente, devido o repositório remoto está uma revisão a frente do repositório local do usuário macaulay. Então assim como o usuário macaulay fez no exemplo anterior, ele atualiza sua branch local com o `git pull`. Mas quando ele executa o **pull**, é apresentado o seguinte resultado:
+Seu push foi rejeitado novamente, devido o repositório remoto está uma revisão a frente do repositório local do usuário **macaulay**. Então assim como o usuário **macaulay** fez no exemplo anterior, ele atualiza sua branch local com o `git pull`. Mas quando ele executa o `pull`, é apresentado o seguinte resultado:
 
 {% highlight shell %}
 $ git pull
@@ -272,7 +272,7 @@ $ git pull
   Automatic merge failed; fix conflicts and then commit the result.
 {% endhighlight %}
 
-Diferente da primeira vez, o git não foi capaz de realizar o merge automático, então ele passa a responsabilidade para o usuário. Se abrirmos o arquivo index.html, veremos que ele está no seguinte estado:
+Diferente da primeira vez, o git não foi capaz de realizar o merge automático, então ele passa a responsabilidade para o usuário. Se abrirmos o arquivo `index.html`, veremos que ele está no seguinte estado:
 
 {% highlight html %}
 <!DOCTYPE html>
@@ -295,7 +295,7 @@ Diferente da primeira vez, o git não foi capaz de realizar o merge automático,
 </html>
 {% endhighlight %}
 
-Para sinalizar onde houve o conflito, o git adiciona algumas marcações, ele envolve o trecho conflitante com **<<<<<<HEAD** e **>>>>>> Hash da Revisão**. O que está entre **<<<<<<< HEAD** e **=======** são as alterações local, o que está entre **=======** e **>>>>>>>** 5e78803bb99fa975ca550eb8301ec105fe777925 são as alterações atual do repositório remoto. Então o git sinaliza onde houve o conflito e espera que o usuário o resolvê, para resolvermos esse conflito vamos remover a marcação do git e colocarmos os nomes dos dois usuários no copyright, deixando o arquivo com o seguinte estado:
+Para sinalizar onde houve o conflito, o git adiciona algumas marcações, ele envolve o trecho conflitante com **<<<<<<HEAD** e **>>>>>> Hash da Revisão**. O que está entre **<<<<<<< HEAD** e **=======** são as alterações local, o que está entre **=======** e **>>>>>>> 5e78803bb99fa975ca550eb8301ec105fe777925** são as alterações atual do repositório remoto. Então o git sinaliza onde houve o conflito e espera que o usuário o resolva. Para resolvermos esse conflito vamos remover a marcação do git e colocarmos os nomes dos dois usuários no copyright, deixando o arquivo com o seguinte estado:
 
 {% highlight html %}
 <!DOCTYPE html>
@@ -314,7 +314,7 @@ Para sinalizar onde houve o conflito, o git adiciona algumas marcações, ele en
 </html>
 {% endhighlight %}
 
-Pronto, finalizamos a operação de merge manual, mas para o git esse arquivo ainda está com conflito, então temos que realizar o `git add` no arquivo, o **commit** do merge e após isso realizar o push para o repositório remoto.
+Pronto, finalizamos a operação de merge manual, mas para o git esse arquivo ainda está com conflito, então temos que realizar o `git add` no arquivo, o `commit` do merge e após isso realizar o push para o repositório remoto.
 
 {% highlight shell %}
 $ git status
@@ -366,14 +366,14 @@ $ git push origin master
 
 Nós simulamos o cenários onde 2 usuários trabalhavam na mesma branch, mais uma boa prática é separamos uma branch de desenvolvimento da nossa branch principal que é a master, dessa forma colocamos o conteúdo de desenvolvimento na branch master quando a funcionalidade estiver finalizada. Fazendo com o conteúdo da branch master sempre esteja estável.
 
-Então vamos criar duas novas branches, uma para o usuário mcqueide e outra para o usuário macaulay, ambos irão desenvolver em suas branches particulares e depois mandar suas alterações para a branch master quando suas tarefas estiverem finalizadas.
+Então vamos criar duas novas branches, uma para o usuário **mcqueide** e outra para o usuário **macaulay**, ambos irão desenvolver em suas branches particulares e depois mandar suas alterações para a branch master quando suas tarefas estiverem finalizadas.
 
 {% highlight shell %}
 mcqueide:/tmp/repo/treinamentoGit $ git checkout -b mcqueide
 macaulay:/tmp/repo/treinamentoGit $ git checkout -b macaulay
 {% endhighlight %}
 
-Vamos partir nessa seção com nosso arquivo index.html no seguinte estado:
+Vamos partir nessa seção com nosso arquivo `index.html` no seguinte estado:
 
 {% highlight html %}
 <!DOCTYPE html>
@@ -398,7 +398,7 @@ Vamos partir nessa seção com nosso arquivo index.html no seguinte estado:
 </html>
 {% endhighlight %}
 
-O usuário mcqueide já está com seu ramo atualizado, e irá começar seu trabalho, sua primeira tarefa é alterar o título da página. Ele define o título da página como **TreinamentoGit**, depois que ele define o título da página ele realiza o commit.
+O usuário **mcqueide** já está com seu ramo atualizado, e irá começar seu trabalho, sua primeira tarefa é alterar o título da página. Ele define o título da página como **TreinamentoGit**, depois que ele define o título da página ele realiza o `commit`.
 
 {% highlight html %}
 ...
@@ -412,9 +412,9 @@ mcqueide:/tmp/repo/treinamentoGit $ git commit -am "Alterando título da página
    1 file changed, 1 insertion(+), 1 deletion(-)
 {% endhighlight %}
 
-Enquanto isso o macaulay está realizando sua atividade na sua branch particular,  ele define o rodapé da página, e o altera para **TreinamentoGit | CopyRight 2017**.
+Enquanto isso o **macaulay** está realizando sua atividade na sua branch particular,  ele define o rodapé da página, e o altera para **TreinamentoGit | CopyRight 2017**.
 
-Então o usuário mcqueide irá enviar seu commit para a branch master, lembrando que o commit que ele realizou foi na branch particular dele, então primeiros temos que levar esse commit para a branch master e depois enviá-lo para o repositório remoto. Primeiro ele faz o **checkout** para branch master, executa o `git pull` para ter certeza se não novas alterações, e em seguida faz o **merge** da branch master com sua branch. Depois de realizar o **merge**, se executarmos o `git log` veremos que o commit que ele realizou na branch mcqueide, já se encontra na branch master, então podemos enviar para o repositório remoto com o `git push`.
+Então o usuário **mcqueide** irá enviar seu `commit` para a branch master, lembrando que o commit que ele realizou foi na branch particular dele, então primeiros temos que levar esse commit para a branch master e depois enviá-lo para o repositório remoto. Primeiro ele faz o **checkout** para branch master, executa o `git pull` para ter certeza se não novas alterações, e em seguida faz o `merge` da **branch master** com sua branch. Depois de realizar o **merge**, se executarmos o `git log` veremos que o commit que ele realizou na **branch mcqueide**, já se encontra na branch master, então podemos enviar para o repositório remoto com o `git push`.
 
 {% highlight shell %}
 mcqueide:/tmp/repo/treinamentoGit $ git checkout master
@@ -447,7 +447,7 @@ mcqueide:/tmp/repo/treinamentoGit $ git push origin master
      3524039..a1c8022  master -> master
 {% endhighlight %}
 
-O usuário macaulay termina sua alteração e realiza o commit na sua branch.
+O usuário **macaulay** termina sua alteração e realiza o `commit` na sua branch.
 
 {% highlight shell %}
 macaulay:/tmp/repo/treinamentoGit $ git commit -am "Alterando rodapé da página"
@@ -455,7 +455,7 @@ macaulay:/tmp/repo/treinamentoGit $ git commit -am "Alterando rodapé da página
    1 file changed, 1 insertion(+), 1 deletion(-)
 {% endhighlight %}
 
-Agora o usuário macaulay vai enviar suas alterações para o repositório remoto, lembrando que ele também está na sua branch particular. Como primeiro passo, o usuário macaulay faz o **checkout** para branch master e nela realiza o **pull**, nisso o git traz as alterações realizada pelo usuário mcqueide para sua branch local, deixando ela atualizada, então ele pode realizar o merge direto da branch master com a branch macaulay, porém isso gera mais um commit de merge no qual queremos evitar, então temos que atualizar sua branch primeiro. Sabendo disso o usuário macaulay muda para sua branch, e para atualizar ela executa o `git rebase`, o **rebase** vai trazer commit a commit e aplicar na branch destino e sem aplicar nenhum commit de merge, caso haja algum conflito. Depois de atualizar sua branch de trabalho, ele volta para a branch master e agora sim realizar o **merge** e envia as alterações para o repositório remoto.
+Agora o usuário **macaulay** vai enviar suas alterações para o repositório remoto, lembrando que ele também está na sua branch particular. Como primeiro passo, o usuário **macaulay** faz o **checkout** para branch master e nela realiza o **pull**, nisso o git traz as alterações realizada pelo usuário **mcqueide** para sua branch local, deixando ela atualizada, então ele pode realizar o merge direto da branch master com a branch macaulay, porém isso gera mais um commit de merge no qual queremos evitar, então temos que atualizar sua branch primeiro. Sabendo disso o usuário **macaulay** muda para sua branch, e para atualizar ela executa o `git rebase`, o **rebase** vai trazer commit a commit e aplicar na branch destino e sem aplicar nenhum commit de merge, caso haja algum conflito. Depois de atualizar sua branch de trabalho, ele volta para a branch master e agora sim realiza o **merge** e envia as alterações para o repositório remoto.
 
 {% highlight shell %}
 macaulay:/tmp/repo/treinamentoGit $ git checkout master
@@ -506,9 +506,9 @@ macaulay:/tmp/repo/treinamentoGit $ git push origin master
 
 ## Merge entre branches quando há conflito
 
-Acabamos de ver como realizar o merge entre branches, mas e quando ocorre conflito? Como podemos resolver eles?
+Acabamos de ver como realizar o **merge** entre branches, mas e quando ocorre conflito? Como podemos resolver eles?
 
-Para simularmos esse cenário, vamos trabalhar com o seguinte arquivo **index.html**.
+Para simularmos esse cenário, vamos trabalhar com o seguinte arquivo `index.html`.
 
 {% highlight html %}
 <!DOCTYPE html>
@@ -533,7 +533,7 @@ Para simularmos esse cenário, vamos trabalhar com o seguinte arquivo **index.ht
 </html>
 {% endhighlight %}
 
-O usuário mcqueide vai iniciar suas alterações na página, ele começa alterando o título da página para **<h1>Treinamento Git</h1>**, e realiza o commit.
+O usuário **mcqueide** vai iniciar suas alterações na página, ele começa alterando o título da página para `<h1>Treinamento Git</h1>`, e realiza o commit.
 
 {% highlight shell %}
 mcqueide:/tmp/repo/treinamentoGit $ git commit -am "Alterando o título da página"
@@ -577,7 +577,7 @@ mcqueide:/tmp/repo/treinamentoGit $ git commit -am "Alterando o rodapé da pági
    1 file changed, 1 insertion(+), 1 deletion(-)
 {% endhighlight %}
 
-Então ele decide enviar os commit para o repositório remoto.
+Então ele decide enviar os commits para o repositório remoto.
 
 {% highlight shell %}
 mcqueide:/tmp/repo/treinamentoGit $ git checkout master
@@ -606,7 +606,7 @@ mcqueide:/tmp/repo/treinamentoGit $ git push origin master
      1df326a..ae4a0b1  master -> master
 {% endhighlight %}
 
-O usuário macaulay estava trabalhando paralelamente com o usuário mcqueide, e portanto não têm as alterações do outro usuário na sua branch. Ele também realiza alterações no documento. Ele começa alterando o título da página e logo em seguida executa o `git commit`.
+O usuário **macaulay** estava trabalhando paralelamente com o usuário **mcqueide**, e portanto não têm as alterações do outro usuário na sua branch. Ele também realiza alterações no documento. Ele começa alterando o título da página e logo em seguida executa o `git commit`.
 
 {% highlight html %}
 ...
@@ -620,7 +620,7 @@ macaulay:/tmp/repo/treinamentoGit $ git commit -am "Atualizando o título do doc
    1 file changed, 1 insertion(+), 1 deletion(-)
 {% endhighlight %}
 
-Agora o usuário macaulay atualiza o conteúdo do rodapé realizando o commit em seguida.
+Agora o usuário **macaulay** atualiza o conteúdo do rodapé realizando o commit em seguida.
 
 {% highlight html %}
 ...
@@ -636,7 +636,7 @@ macaulay:/tmp/repo/treinamentoGit $ git commit -am "Atualizando o rodapé do doc
    1 file changed, 1 insertion(+), 1 deletion(-)
 {% endhighlight %}
 
-Terminando essas alterações, ele deseja enviar suas alterações para o repositório remoto. Para isso, ele realiza o mesmo processo que já realizamos algumas vezes aqui, ele vai mudar para a branch master, atualizar ela, e depois voltar para a branch macaulay para atualizar ela com o conteúdo da master.
+Terminando essas alterações, ele deseja enviar suas alterações para o repositório remoto. Para isso, ele realiza o mesmo processo que já realizamos algumas vezes aqui, ele vai mudar para a branch master, atualizar ela, e depois voltar para a **branch macaulay** para atualizar ela com o conteúdo da master.
 
 {% highlight shell %}
 macaulay:/tmp/repo/treinamentoGit $ git checkout master
@@ -659,7 +659,7 @@ macaulay:/tmp/repo/treinamentoGit $ git checkout macaulay
   Switched to branch 'macaulay'
 {% endhighlight %}
 
-Então agora ele está pronto para realizar o rebase, porém ao realizar o rebase ele obtém o seguinte resultado na sua tela do terminal.
+Então agora ele está pronto para realizar o `rebase`, porém ao realizar o rebase ele obtém o seguinte resultado na sua tela do terminal.
 
 {% highlight shell %}
 macaulay:/tmp/repo/treinamentoGit $ git rebase master macaulay
@@ -679,7 +679,7 @@ macaulay:/tmp/repo/treinamentoGit $ git rebase master macaulay
   To check out the original branch and stop rebasing, run "git rebase --abort".
 {% endhighlight %}
 
-Essa mensagem informa que houve conflito durante o rebase, lembrando que o git rebase aplica commit a commit na branch que está sendo atualizada, na aplicação do primeiro commit houve um conflito que deve ser tratado, e o próprio git já dá uma dica que após  o tratamento do merge o usuário pode dar continuidade do rebase com o comando `git rebase --continue`. Então vamos tratar o primeiro conflito.
+Essa mensagem informa que houve conflito durante o `rebase`, lembrando que o git rebase aplica commit a commit na branch que está sendo atualizada, na aplicação do primeiro commit houve um conflito que deve ser tratado, e o próprio git já dá uma dica que após  o tratamento do merge o usuário pode dar continuidade do rebase com o comando `git rebase --continue`. Então vamos tratar o primeiro conflito.
 
 {% highlight html %}
 ...
@@ -701,7 +701,7 @@ O primeiro conflito foi exatamente na tag header, que foi a aplicação do prime
 </header>
 {% endhighlight %}
 
-Depois ele realiza o `git add` para informar para o git que o merge foi realizado e executa o `git rebase --continue` para dar continuidade no processo de rebase.
+Depois ele realiza o `git add` para informar para o git que o `merge` foi realizado e executa o `git rebase --continue` para dar continuidade no processo de rebase.
 
 {% highlight shell %}
 macaulay:/tmp/repo/treinamentoGit $ git add index.html
@@ -737,7 +737,7 @@ E novamente ocorre um novo conflito, porém dessa vez podemos perceber que o git
 ...
 {% endhighlight %}
 
-Dessa vez o usuário macaulay escolhe manter o trecho do usuário mcqueide.
+Dessa vez o usuário **macaulay** escolhe manter o trecho do usuário **mcqueide**.
 
 {% highlight html %}
 ...
@@ -756,7 +756,7 @@ macaulay:/tmp/repo/treinamentoGit $ git rebase --continue
   Applying: Atualizando o rodapé do documento
 {% endhighlight %}
 
-Agora o usuário macaulay pode retornar para a branch master e continuar o processo de envio de suas alterações para o repositório remoto.
+Agora o usuário **macaulay** pode retornar para a branch master e continuar o processo de envio de suas alterações para o repositório remoto.
 
 {% highlight shell %}
 macaulay:/tmp/repo/treinamentoGit $ git checkout master
@@ -812,7 +812,7 @@ Para simularmos esse cenário vamos utilizar o seguinte arquivo como início.
 </html>
 {% endhighlight %}
 
-Dentro da tag main adicione qualquer texto, por exemplo testando **git checkout** em arquivo. Após isso execute o `git status`.
+Dentro da tag main adicione qualquer texto, por exemplo `testando git checkout em arquivo`. Após isso execute o `git status`.
 
 {% highlight shell %}
 mcqueide:/tmp/repo/treinamentoGit $ git status
@@ -840,7 +840,7 @@ mcqueide:/tmp/repo/treinamentoGit $ git status
   nada a submeter, diretório de trabalho vazio
 {% endhighlight %}
 
-Ao abrir o arquivo você pode notar que o arquivo foi restaurado para o estado anterior. O git checkout resolveu esse caso, mas e se já tivéssemos executado o git add? O git checkout não vai conseguir resolver. Então vamos ao exemplo. Vamos adicionar novamente qualquer texto na tag main. Depois adicione o arquivo mas não faça o commit e execute o `git status`.
+Ao abrir o arquivo você pode notar que o arquivo foi restaurado para o estado anterior. O `git checkout` resolveu esse caso, mas e se já tivéssemos executado o `git add`? O `git checkout` não vai conseguir resolver. Então vamos ao exemplo. Vamos adicionar novamente qualquer texto na tag main. Depois adicione o arquivo mas não faça o commit e execute o `git status`.
 
 {% highlight shell %}
 mcqueide:/tmp/repo/treinamentoGit $ git add index.html
@@ -880,7 +880,7 @@ mcqueide:/tmp/repo/treinamentoGit $ git status
   nada a submeter, diretório de trabalho vazio
 {% endhighlight %}
 
-Se tivermos realizado o commit podemos voltar para algum estado anterior desfazendo as alterações do commit com o git reset. Para simularmos esse cenário, vamos utilizar o arquivo index.html com o seguinte estado.
+Se tivermos realizado o `commit` podemos voltar para algum estado anterior desfazendo as alterações do commit com o `git reset`. Para simularmos esse cenário, vamos utilizar o arquivo `index.html` com o seguinte estado.
 
 {% highlight html %}
 <!DOCTYPE html>
@@ -970,9 +970,9 @@ mcqueide:/tmp/repo/treinamentoGit $ git checkout index.html
 
 No exemplo, nós desfizemos apenas um commit, mas podemos desfazer quantos commit desejarmos, é necessário apenas passar o commit para qual desejamos retornar.
 
-Mas e se o commit que queremos desfazer está entre outros commits? Se executarmos o git reset, ele irá desfazer inclusive os commits que não queremos desfazer. Para isso vamos usar o git revert, com ele podemos escolher apenas o commit que queremos reverter especificamente.
+Mas e se o commit que queremos desfazer está entre outros commits? Se executarmos o `git reset`, ele irá desfazer inclusive os commits que não queremos desfazer. Para isso vamos usar o `git revert`, com ele podemos escolher apenas o commit que queremos reverter especificamente.
 
-Para isso vamos preparar nosso teste. Vamos voltar no arquivo index.html para o seguinte estado novamente.
+Para isso vamos preparar nosso teste. Vamos voltar no arquivo `index.html` para o seguinte estado novamente.
 
 {% highlight html %}
 <!DOCTYPE html>
@@ -1087,7 +1087,7 @@ This reverts commit 425e08dbe86907dd157ba37e7907d028b232fb79.
 
 > Lembrando que o que está com # no início da linha não irá na mensagem de commit, por que é linha comentada.
 
-Depois se executarmos o git log novamente veremos que temos um commit de revert, e nosso arquivo ficou sem as alterações realizada no commit revertido.
+Depois se executarmos o `git log` novamente veremos que temos um commit de revert, e nosso arquivo ficou sem as alterações realizada no commit revertido.
 
 {% highlight shell %}
 mcqueide:/tmp/repo/treinamentoGit $ git log
@@ -1146,7 +1146,7 @@ E quando temos alterações realizadas em algum arquivos e que não foram enviad
 
 Apresento o `git stash`, ao executá-lo o git move todos os arquivos que estão modificados para um local separado. Deixando o repositório local sem modificações e pronto para fazer a operação de atualização.
 
-O nosso usuário macaulay ficou um tempo sem atualizar seu repositório, e agora quer atualizar ele só que o git não deixa.
+O nosso usuário **macaulay** ficou um tempo sem atualizar seu repositório, e agora quer atualizar ele só que o git não deixa.
 
 {% highlight shell %}
 macaulay:/tmp/repo/treinamentoGit $ git pull
@@ -1163,7 +1163,7 @@ macaulay:/tmp/repo/treinamentoGit $ git pull
   Aborting
 {% endhighlight %}
 
-Porém ele não finalizou seu trabalho ainda e não quer enviar ele incompleto. Note que o git dá uma dica, ele avisa o usuário para realizar o commit das alterações ou realizar o stash delas. Vamos realizar o **stash** e em seguida o `git status` para verificar o estado dos arquivos.
+Porém ele não finalizou seu trabalho ainda e não quer enviar ele incompleto. Note que o git dá uma dica, ele avisa o usuário para realizar o commit das alterações ou realizar o stash delas. Vamos realizar o `stash` e em seguida o `git status` para verificar o estado dos arquivos.
 
 {% highlight shell %}
 macaulay:/tmp/repo/treinamentoGit $ git stash
@@ -1210,14 +1210,14 @@ macaulay:/tmp/repo/treinamentoGit $ git stash apply stash@{0}
   nenhuma modificação adicionada à submissão (utilize "git add" e/ou "git commit -a")
 {% endhighlight %}
 
-Depois de aplicar podemos remover o stash com o comando git stash drop.
+Depois de aplicar podemos remover o `stash` com o comando `git stash drop`.
 
 {% highlight shell %}
 macaulay:/tmp/repo/treinamentoGit $ git stash drop stash@{0}
   Dropped stash@{0} (3e54be25fdda2eee3e55c463e25e167ff4af1422)
 {% endhighlight %}
 
-Para pegarmos o último stash e já removê-lo logo em seguida podemos usar o `git stash pop`.
+Para pegarmos o último `stash` e já removê-lo logo em seguida podemos usar o `git stash pop`.
 
 {% highlight shell %}
 macaulay:/tmp/repo/treinamentoGit $ git stash pop
@@ -1240,11 +1240,11 @@ Se executarmos o `git stash list`, veremos que não tem nenhum stash.
 
 Sabe aquele dica que o professor de matemática falava só depois que ele explicou todo o conteúdo? Então agora vou apresentá-los o **alias**. O alias é um apelido que você escolhe para um comando git ou a execução de uma cadeia de comandos, tornando aquele comando menos verboso, mais claro para você, ou deixá-lo de uma forma que você já esteja acostumado, caso já use alguma outra ferramenta de versionamento.
 
-Para fazer configuração de aliases, devemos alterar nosso arquivo .gitconfig, e se ele não existir podemos apenas criar e configurá-lo. O local desse arquivo é na pasta do seu usuário no sistema operacional. Se for windows ele estará em `C:\Users\seu_usuario\.gitconfig`, se for linux ou mac você pode encontrá-lo em `/home/seu_usuario/.gitconfig`.
+Para fazer configuração de aliases, devemos alterar nosso arquivo `.gitconfig`, e se ele não existir podemos apenas criar e configurá-lo. O local desse arquivo é na pasta do seu usuário no sistema operacional. Se for windows ele estará em `C:\Users\seu_usuario\.gitconfig`, se for linux ou mac você pode encontrá-lo em `/home/seu_usuario/.gitconfig`.
 
-Para configurar nosso primeiro alias, vamos abrir o arquivo **.gitconfig** e adicionar uma nova linha com **[alias]** caso não exista, com isso é como se tivéssemos adicionando umas nova seção de configuração no nosso arquivo. Abaixo dessa linha iremos configurar nossos aliases.
+Para configurar nosso primeiro alias, vamos abrir o arquivo `.gitconfig` e adicionar uma nova linha com **[alias]** caso não exista, com isso é como se tivéssemos adicionando umas nova seção de configuração no nosso arquivo. Abaixo dessa linha iremos configurar nossos aliases.
 
-O primeiro a ser configurado será o alias para commit, para quem já usou o SVN, talvez esteja acostumado a verificar o status dos arquivos com **st**.
+O primeiro a ser configurado será o alias para commit, para quem já usou o SVN, talvez esteja acostumado a verificar o status dos arquivos com `st`.
 
 {% highlight shell %}
 [alias]
@@ -1261,7 +1261,7 @@ Agora toda vez que você for querer verificar o status dos arquivos no seu repos
 	df = diff
 {% endhighlight %}
 
-Além de aliases para simples comandos, podemos criar para execução de vários comando seguidos, para isso é só adicionar **!** no começo da linha e encadear os comandos com **&&**, e os comandos serão executados na ordem em que foram declarados um após o outro. Isso pode facilitar por exemplo o processo de envio dos arquivos modificados para a branch master, antes tínhamos que fazer o checkout para a branch master, atualizar ela, depois voltar para a branch particular, rodar o rebase para então voltar para a branch master novamente, realizar o merge e enviar os arquivos com o git push. Para simplificarmos todo esse processo podemos apenas executar `git envia`. Sério, para isso, só precisamos configurar o alias.
+Além de aliases para simples comandos, podemos criar para execução de vários comando seguidos, para isso é só adicionar `!` no começo da linha e encadear os comandos com `&&`, e os comandos serão executados na ordem em que foram declarados um após o outro. Isso pode facilitar por exemplo o processo de envio dos arquivos modificados para a branch master, antes tínhamos que fazer o checkout para a branch master, atualizar ela, depois voltar para a branch particular, rodar o rebase para então voltar para a branch master novamente, realizar o merge e enviar os arquivos com o git push. Para simplificarmos todo esse processo podemos apenas executar `git envia`. Sério, para isso, só precisamos configurar o alias.
 
 {% highlight shell %}
 [alias]
@@ -1274,4 +1274,4 @@ Agora para realizar o processo que precisávamos de vários comando, precisamos 
 
 ## Conclusão
 
-Nesse material já vimos algumas operações um pouco mais avançadas. Espero ter ajudado a remover o medo que muitos possuem nas operações de merge, e que tirem um bom proveito do uso das chaves ssh. Mas não vimos tudo o que o git nos permite fazer ainda. Para isso, o git conta com uma boa documentação com exemplos inclusive. A documentação do Git está disponível nesse [link](https://git-scm.com/doc). Espero que tenham gostado e até o próximo post.
+Nesse artigo vimos algumas operações mais avançadas. Espero ter ajudado a remover o medo que muitos possuem nas operações de merge, e que tirem um bom proveito do uso das **chaves SSH**. Mas não vimos tudo o que o git nos permite fazer ainda. Para isso, o git conta com uma boa documentação com exemplos inclusive. A documentação do Git está disponível nesse **[link](https://git-scm.com/doc)**. Espero que tenham gostado e até o próximo artigo.
