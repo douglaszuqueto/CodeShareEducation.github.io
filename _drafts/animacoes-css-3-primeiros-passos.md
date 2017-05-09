@@ -1,3 +1,19 @@
+---
+layout: post
+title: "Animações com CSS3: Primeiros PAssos"
+date: 2016-11-17 13:40:21
+author: claudio
+image:
+description: 'Aprenda como começar a criar animações utilizando CSS3'
+tags:
+- css
+- animações
+- front-end
+categories:
+- Animações com CSS
+twitter_text: 'Aprenda como começar a criar animações utilizando CSS3'
+---
+
 # Básicos de animação em CSS3
 
 A animação tem sido um dos principais pilares da interactividade na internet. Sejam filmes, gifs animados, animação em flash; quando usadas correctamentes, as animações são da ferramentas de interactividade mais poderosas. Trazem vida ao ecrã e adicionam uma nova camada de User Experience ao nosso conteúdo.
@@ -20,7 +36,7 @@ Por exemplo, vamos considerar o nosso amiguinho, o pequeno quadrado vermelho:
 ```html
 <html>
     <head>
-        <style> 
+        <style>
         div {
             width: 100px;
             height: 100px;
@@ -49,7 +65,7 @@ ou o equivalente:
     from {background-color: red;}
     to {background-color: yellow;}
 }
-``` 
+```
 
 Agora que temos a nossa animação criada, temos que a chamar dentro do selector CSS que queremos animar. Para esse efeito usamos a propriedade **animation**. A propriedade **animation** pode ter múltiplas propriedades:
 
@@ -124,13 +140,10 @@ div {
     }
 ```
  ### Concluindo
-Há muito a dizer acerca de animações usando CSS3. Utilizando as ferramentas que vimos neste pequeno tutorial é apenas uma questão de utilizar mais estados por forma a criar animações mais robustas e complexas. Podem também encontrar muitos mais exemplos de animações em CSS3 na internet para inspiração. 
+Há muito a dizer acerca de animações usando CSS3. Utilizando as ferramentas que vimos neste pequeno tutorial é apenas uma questão de utilizar mais estados por forma a criar animações mais robustas e complexas. Podem também encontrar muitos mais exemplos de animações em CSS3 na internet para inspiração.
 
 Por exemplo, podem conferir neste [fiddle](https://jsfiddle.net/DailyMatters/vpet4v1e/) a continuação da aventura do nosso quadrado vermelho.
 
 Espero que tenham gostado desta introdução às animações usando CSS3. Partilhem as vossas experiências nos comentários.
 
 Até uma próxima!
-
-
-
