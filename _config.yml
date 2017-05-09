@@ -45,6 +45,31 @@ authors:
     <p>Tenho 2 anos de experiência com desenvolvimento de software voltados para web. Gosto muito de ler, e compartilhar
     conhecimento com os que estão a minha volta, e estou sempre a procura de um maior crescimento.</p>"
 
+  edson:
+    name: Edson Junior
+    gravatar: 95eef2ad27ac806bf77e5b837ddc47ec
+    email: junior.si16@gmail.com
+    github: roinuj16
+    linkedin: roinuj16
+    twitter: juniorsi16
+    facebook: Roinuj16
+    site: https://roinuj16.github.io/
+    bio: "Sou desenvolvedor PHP, graduado em Sistemas de Informação e apaixonado por tecnologia, trabalho há mais de três anos como
+    desenvolvedor PHP, gosto de aprimorar e atualizar meus conhecimentos e também gosto de trocar experiência e conhecimento com
+    outras pessoas. O sucesso e a diversão que tenho no meu trabalho é imenso e mantém essa paixão ardentemente viva."
+
+  claudio:
+    name: Claudio Ribeiro
+    gravatar: bde4c63167ba18607df504d7feefe16a
+    email: claudio.santos.ribeiro@gmail.com
+    github: DailyMatters
+    linkedin: cl%C3%A1udio-ribeiro-16523750/
+    twitter: ClauASRibeiro
+    Facebook: claudio.santos.ribeiro.6
+    site:
+    bio: "Software developer, escritor e viajante de Lisboa. Quando não estou a viajar ou a escrever alguma peça acerca de desenvolvimento
+    web podem encontrar-me algures a tentar ser um agente de disrupção e inovação!"
+
   vinicius:
     name: Vinicius Oliveira da Silva
     gravatar: e2ed81a1a0937c3cc302caec8964ae49
@@ -69,19 +94,6 @@ authors:
     site: http://matepaiva.com
     bio: "Apaixonado por escrever: seja em linguagem de máquina ou humana. Formado em Jornalismo e pós-graduado em Cibercultura,
     mas trabalho com desenvolvimento web desde 2015 - e amando! Meu maior desejo é nunca parar de aprender."
-
-  edson:
-    name: Edson Junior
-    gravatar: 95eef2ad27ac806bf77e5b837ddc47ec
-    email: junior.si16@gmail.com
-    github: roinuj16
-    linkedin: roinuj16
-    twitter: juniorsi16
-    facebook: Roinuj16
-    site: https://roinuj16.github.io/
-    bio: "Sou desenvolvedor PHP, graduado em Sistemas de Informação e apaixonado por tecnologia, trabalho há mais de três anos como
-    desenvolvedor PHP, gosto de aprimorar e atualizar meus conhecimentos e também gosto de trocar experiência e conhecimento com
-    outras pessoas. O sucesso e a diversão que tenho no meu trabalho é imenso e mantém essa paixão ardentemente viva."
 
   lucas:
     name: Lucas Gabriel
