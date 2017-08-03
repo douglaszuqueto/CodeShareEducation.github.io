@@ -1,0 +1,1 @@
+var CACHE_NAME="codeshare-cache-v1",urlsToCache=["/","/assets/css/main.css","/assets/js/main.js"];self.addEventListener("install",function(s){s.waitUntil(caches.open(CACHE_NAME).then(function(s){return console.log("Opened cache"),s.addAll(urlsToCache)}))});
