@@ -1,6 +1,7 @@
 var CACHE_NAME = 'codeshare-cache-v1';
 var urlsToCache = [
     '/',
+    '/index.html',
     '/assets/css/main.css',
     '/assets/js/main.js'
 ];
@@ -12,5 +13,14 @@ self.addEventListener('install', function (event) {
                 console.log('Opened cache');
                 return cache.addAll(urlsToCache);
             })
+    );
+});
+
+self.addEventListener('fetch', function (event) {
+    console.log(event.request.url);
+    event.respondWith(
+        caches.match(event.request).then(function (response) {
+            return response || fetch(event.request);
+        })
     );
 });
