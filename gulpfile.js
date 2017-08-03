@@ -73,6 +73,9 @@ gulp.task('js', function(){
  * Service Worker Task
  */
 gulp.task('sw', ['jekyll-build'], function () {
+	gulp.src('./src/manifest.json')
+		.pipe(gulp.dest('./_site/'))
+	
 	return gulp.src('./sw.js')
 		.pipe(plumber())
 		.pipe(uglify())
